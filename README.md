@@ -2,7 +2,7 @@
 
 Tiny Tots Playroom is our ASU FSE100 team project. We are building four short activities that help young children practice careful hand and mouse movements. Our development proposal shows a colorful playroom with a shared screen layout for each activity.
 
-**Play Cayden's preview:** [Open the HUD and Feed the Dragon game](https://caydenrubiowill.github.io/p5Js-ChildMotorSkills/cayden-hud-preview.html). **See the code:** [Cayden's `cayden-development` branch](https://github.com/caydenrubiowill/p5Js-ChildMotorSkills/tree/cayden-development). This is a fork for sharing and testing; it has not been merged into the [team repository](https://github.com/msolis177/p5Js-ChildMotorSkills).
+**Cayden's preview file:** [View the HUD and Feed the Dragon preview](https://github.com/msolis177/p5Js-ChildMotorSkills/blob/cayden-development/cayden-hud-preview.html). **See the code:** [the team repository's `cayden-development` branch](https://github.com/msolis177/p5Js-ChildMotorSkills/tree/cayden-development). This branch is for sharing and testing; it has not been merged into the [team repository's `main` branch](https://github.com/msolis177/p5Js-ChildMotorSkills/tree/main).
 
 ## What works today
 
@@ -25,7 +25,7 @@ Open a terminal in the project folder and start a small local web server:
 python3 -m http.server 8000
 ```
 
-Open `http://localhost:8000/cayden-hud-preview.html` in a browser. In Codespaces, open the forwarded port 8000 and add `/cayden-hud-preview.html` to its URL. If you only want to play, use the [online preview](https://caydenrubiowill.github.io/p5Js-ChildMotorSkills/cayden-hud-preview.html) instead. The separate starter page is at `http://localhost:8000/index.html`.
+Open `http://localhost:8000/cayden-hud-preview.html` in a browser. In Codespaces, open the forwarded port 8000 and add `/cayden-hud-preview.html` to its URL. If you only want to inspect it on GitHub, use the [preview file on the `cayden-development` branch](https://github.com/msolis177/p5Js-ChildMotorSkills/blob/cayden-development/cayden-hud-preview.html) instead. The separate starter page is at `http://localhost:8000/index.html`.
 
 A web server matters here because the game loads sound files. Opening the HTML file directly from the file manager may stop the sounds from loading. The project already includes p5.js and p5.sound in `libraries/`; there is no package installation step.
 
