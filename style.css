@@ -1,14 +1,44 @@
 html, body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   margin: 0;
   padding: 0;
+  display: grid;
+  place-items: center;
   background-image: url(assets/images/Screenshot\ 2026-10-19\ at\ 11.11.27\ AM.png) ;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
- /*min-height: 100vh;*/
+  min-height: 90vh;
+}
+
+.container {
+  display: grid;
+  justify-content: center;
+  min-height: 30vh;
+  /*border: 3px solid green;*/
 }
 
 button{
+  background-color: rgb(209, 56, 56);
+  align-items: center;
+  min-width: 80vh;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.89);
+  border-radius: 30px;
+  font-size: 5vh;
 
+}
+.text-cont{
+  display: flex;
+  margin-top: 12vh;
+  /*border: 3px solid blue;*/
+  min-width: 110vh;
+  align-items: center;
+  justify-content: center;
+}
+h1{
+  /*border: 3px solid red;*/
+  color: rgb(66, 61, 61);
+  font-size: 13vh;
 
 }
