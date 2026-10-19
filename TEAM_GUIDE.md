@@ -2,12 +2,14 @@
 
 This guide is for anyone adding a game to our FSE100 project. You do not need to know every part of p5.js or Git before starting. Make a small change, run the preview, and check which files changed before saving your work.
 
+To try Cayden's work right away, [open the playable HUD preview](https://caydenrubiowill.github.io/p5Js-ChildMotorSkills/cayden-hud-preview.html). To read or download its source, open [Cayden's `cayden-development` branch](https://github.com/caydenrubiowill/p5Js-ChildMotorSkills/tree/cayden-development). This is a fork of the [team repository](https://github.com/msolis177/p5Js-ChildMotorSkills), not a change to the team's `main` branch.
+
 ## A. Getting started
 
-1. Open [our GitHub repository](https://github.com/msolis177/p5Js-ChildMotorSkills). Choose **Code** to open a Codespace or copy the repository URL to clone it in VS Code.
+1. Open [Cayden's branch](https://github.com/caydenrubiowill/p5Js-ChildMotorSkills/tree/cayden-development) if you want the working HUD and dragon game. Choose **Code** to open a Codespace or copy the repository URL to clone it in VS Code. The original [team repository](https://github.com/msolis177/p5Js-ChildMotorSkills) does not yet contain this prototype.
 2. In VS Code, open the `p5Js-ChildMotorSkills` folder. The Explorer panel on the left shows the files and folders.
 3. Open a terminal in that folder. In VS Code, use **Terminal → New Terminal**. Run `git branch --show-current` and `git status` so you know which branch you are using and whether you have changes already.
-4. Start the preview with `python3 -m http.server 8000`. Visit `http://localhost:8000/cayden-hud-preview.html`. In Codespaces, use the forwarded port 8000 link and add `/cayden-hud-preview.html` to the end.
+4. Start the preview with `python3 -m http.server 8000`. Visit `http://localhost:8000/cayden-hud-preview.html`. In Codespaces, use the forwarded port 8000 link and add `/cayden-hud-preview.html` to the end. You can also use the online preview link above without installing anything.
 5. Click **Next** to see the four activity screens. Feed the Dragon is Game 3. The other three game pictures are previews, not finished activities.
 
 The `games/` folder has one folder per activity. `hud/` holds Cayden's shared interface prototype. `assets/` holds pictures and sounds. `libraries/` contains p5.js and p5.sound. The main `index.html` and `sketch.js` are still the original starter page; `cayden-hud-preview.html` is the working game preview.
@@ -87,3 +89,5 @@ To measure speed, `feedDragonMouseDragged()` compares the spoon's new and old po
 When the child releases the spoon, `feedDragonMouseReleased()` checks whether it has food and is close enough to the dragon's mouth. A release within 39 canvas pixels of the mouth succeeds and plays the confirmation sound. Releasing near the dragon but away from the mouth is a miss. The child may pause and re-grab the spoon earlier along the path. `resetFeedTheDragon()` puts the spoon back at its starting position, clears the food and result, and restores the first instruction. The HUD's Try Again button calls that function on Game 3.
 
 All of this is a prototype. The storyboard's game-selection menu, completed-game marks, and end celebration still need to be connected by the team.
+
+To make one combined app later, the team can review each student's branch, agree on any shared HUD changes, load each game file in the main page, and connect its drawing, mouse, and restart functions as described in Section B. Test all four games together before merging. Nothing in Cayden's fork automatically changes the team repository.
