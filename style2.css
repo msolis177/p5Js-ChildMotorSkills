@@ -1,121 +1,98 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  background-image: url(assets/images/Screenshot\ 2026-10-19\ at\ 11.11.27\ AM.png) ;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
- /*min-height: 100vh;*/ 
-}
-/* Position the menu */
-.container{
-  position: relative;
-  max-width: 650px;
-  margin: 0 auto;
-  padding-top: 35px;
-}
-
-/* back button */
-.back-button {
-  position: fixed;
-  top: 30px;
-  left: 200px;
-  margin: 0;
-  padding: 18px 40px;
-  background-color: #f7e7bd;
-  cursor: pointer;
-  font-size: 22px;
-  border: none;
-}
-
-/* Main menu */
-.menu {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 35px;
+* {
   box-sizing: border-box;
 }
 
-
-/* Heading */
-h1 {
-  text-align: center;
-  font-size: 50px;
-  margin: 0 0 25px;
+html,
+body {
+  margin: 0;
+  min-height: 100%;
 }
 
-/* 2 by 2 grid */
+body {
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background: #f7e7bd;
+  font-family: "Franklin Gothic Medium", Arial, sans-serif;
+}
+
+.playroom-frame {
+  position: relative;
+  width: min(100%, 970px);
+  aspect-ratio: 960 / 640;
+  border: 5px solid #7b584b;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(89, 67, 58, 0.2);
+
+  background-image: url("assets/images/finish-background.png");
+  background-size: 100% 100%;
+  background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px;
+}
+
+h1 {
+  margin: 0;
+  color: #423d3d;
+  font-size: clamp(24px, 4vw, 44px);
+}
+
+.container {
+  width: 100%;
+}
+
+.back-button {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 10px 20px;
+  border: 2px solid #7b584b;
+  border-radius: 12px;
+  background: #ffe6a3;
+  color: #59433a;
+  font: inherit;
+  cursor: pointer;
+}
+
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(2, 110px);
-  gap: 15px 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 46%;
+  margin: 0 auto;
 }
 
-/* Game boxes */
 .game-card {
-  width: 110px;
-  height: 110px;
-  background-color: transparent;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 5px;
   border: 2px solid #52657a;
-  cursor: pointer;
-
+  background: rgba(255, 254, 248, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
+  cursor: pointer;
 }
 
-/* Center the heading */
-h1 {
-  text-align: center;
-  font-size: 50px;
-  margin: 0 0 20px 0;
+.game-card:hover,
+.back-button:hover {
+  background: #fff0c7;
 }
 
-/* Four game pictures*/
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 300px);
-  gap: 15px 20px;
-  width: max-content;
-  margin: 100px auto 0;
-} 
+.game-picture {
+  font-size: clamp(32px, 8vw, 100px);
+  line-height: 1;
+}
 
-/* Square picture buttons */
-.game-card {
-    width: 300px;
-    height: 300px;
-    margin: 0px;
-    background-color: transparent;
-    border: 2px solid #52657a;
-    border-radius: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  /* Images inside squares */
-  .game-card img {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-  }
-
-  /* HOVER EFFECT */
-  .game-card:hover {
-    background-color: #fff0c7;
-  }
-
-  /* Make the game pictures bigger */
-  .game-picture {
-    font-size: 150px;
-    line-height: 1;
-  }
-
-  
-  
-  
-
+.game-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
