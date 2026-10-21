@@ -30,3 +30,26 @@ drawHudButton(
   "#FFE6A3"
 );
 }
+function hankFinishMousePressed() {
+    const playAgainButton = {
+    x: 260,
+    y: 470,
+    width: 200,
+    height: 60
+  };
+
+  if (isInsideHudButton(mouseX, mouseY, playAgainButton)) {
+    window.location.href = "accessmenu.html";
+    return;
+  }
+  const homeButton = {
+    x: 500,
+    y: 470,
+    width: 200,
+    height: 60,
+  };
+
+  if (isInsideHudButton(mouseX, mouseY, homeButton)) {
+    window.location.href = "index.html";
+  }
+}

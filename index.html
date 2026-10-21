@@ -2,23 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiny Tots Playroom</title>
 
+    <link rel="stylesheet" href="style.css" />
 
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <div class="text-cont">
-      <h1>Tiny Tots Playroom</h1>
-    </div>
-
-    <div class="container">
-        <button onclick="window.location.href='accessmenu.html';">START</button>
-    </div>
-
-    /<script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script> 
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
   </head>
 
   <body>
+    <main class="playroom-frame">
+      <div class="text-cont">
+        <h1>Tiny Tots Playroom</h1>
+      </div>
+
+      <div class="container">
+        <button onclick="window.location.href='accessmenu.html';">
+          START
+        </button>
+      </div>
+    </main>
+
     <script src="sketch.js"></script>
   </body>
 </html>

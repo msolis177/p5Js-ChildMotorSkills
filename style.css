@@ -1,44 +1,72 @@
-html, body {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
   margin: 0;
-  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  padding: 24px;
   display: grid;
   place-items: center;
-  background-image: url(assets/images/Screenshot\ 2026-10-19\ at\ 11.11.27\ AM.png) ;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  min-height: 90vh;
+  background: #f7e7bd;
+  font-family: "Franklin Gothic Medium", Arial, sans-serif;
+}
+
+.playroom-frame {
+  width: min(100%, 970px);
+  aspect-ratio: 960 / 640;
+  border: 5px solid #7b584b;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(89, 67, 58, 0.2);
+
+  background-image: url("assets/images/finish-background.png");
+  background-size: 100% 100%;
+  background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 24px;
+}
+
+.text-cont {
+  width: 75%;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  color: #423d3d;
+  font-size: clamp(28px, 6vw, 64px);
 }
 
 .container {
-  display: grid;
-  justify-content: center;
-  min-height: 30vh;
-  /*border: 3px solid green;*/
-}
-
-button{
-  background-color: rgb(209, 56, 56);
-  align-items: center;
-  min-width: 80vh;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.89);
-  border-radius: 30px;
-  font-size: 5vh;
-
-}
-.text-cont{
   display: flex;
-  margin-top: 12vh;
-  /*border: 3px solid blue;*/
-  min-width: 110vh;
-  align-items: center;
   justify-content: center;
+  width: 100%;
 }
-h1{
-  /*border: 3px solid red;*/
-  color: rgb(66, 61, 61);
-  font-size: 13vh;
 
+button {
+  width: 45%;
+  min-height: 70px;
+  padding: 16px;
+  border: 3px solid #7b584b;
+  border-radius: 18px;
+  background: rgb(209, 56, 56);
+  color: white;
+  font: inherit;
+  font-size: clamp(22px, 4vw, 36px);
+  cursor: pointer;
+}
+
+button:hover {
+  background: #bd4540;
 }

@@ -46,7 +46,13 @@ function setup() {
   strokeJoin(ROUND);
 }
 
+let hankFinishVisible = true;
+
 function draw() {
+  if (hankFinishVisible) {
+    drawHankFinishScreen();
+    return;
+  }
   background("#FFF5D9");
 
   drawToyDecorations();
@@ -162,6 +168,10 @@ function drawHudButton(button, label, buttonColor) {
 }
 
 function mousePressed() {
+  if (hankFinishVisible) {
+    hankFinishMousePressed();
+    return;
+  }
   if (isInsideHudButton(mouseX, mouseY, hudButtons.home)) {
     hudCurrentGame = 0;
     hudMessage = "Home selected - the game menu will be connected later.";
