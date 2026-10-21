@@ -1,0 +1,121 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-image: url(assets/images/Screenshot\ 2026-10-19\ at\ 11.11.27\ AM.png) ;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+ /*min-height: 100vh;*/ 
+}
+/* Position the menu */
+.container{
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto;
+  padding-top: 35px;
+}
+
+/* back button */
+.back-button {
+  position: fixed;
+  top: 30px;
+  left: 200px;
+  margin: 0;
+  padding: 18px 40px;
+  background-color: #f7e7bd;
+  cursor: pointer;
+  font-size: 22px;
+  border: none;
+}
+
+/* Main menu */
+.menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 35px;
+  box-sizing: border-box;
+}
+
+
+/* Heading */
+h1 {
+  text-align: center;
+  font-size: 50px;
+  margin: 0 0 25px;
+}
+
+/* 2 by 2 grid */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 110px);
+  gap: 15px 20px;
+}
+
+/* Game boxes */
+.game-card {
+  width: 110px;
+  height: 110px;
+  background-color: transparent;
+  border: 2px solid #52657a;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+/* Center the heading */
+h1 {
+  text-align: center;
+  font-size: 50px;
+  margin: 0 0 20px 0;
+}
+
+/* Four game pictures*/
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 300px);
+  gap: 15px 20px;
+  width: max-content;
+  margin: 100px auto 0;
+} 
+
+/* Square picture buttons */
+.game-card {
+    width: 300px;
+    height: 300px;
+    margin: 0px;
+    background-color: transparent;
+    border: 2px solid #52657a;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Images inside squares */
+  .game-card img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  /* HOVER EFFECT */
+  .game-card:hover {
+    background-color: #fff0c7;
+  }
+
+  /* Make the game pictures bigger */
+  .game-picture {
+    font-size: 150px;
+    line-height: 1;
+  }
+
+  
+  
+  
+
