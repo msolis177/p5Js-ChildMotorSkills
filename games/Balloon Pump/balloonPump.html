@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="balloon.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pump It Up!</title>
+  <link rel="stylesheet" href="../../style.css">
+
+  <style>
+    #balloon-frame {
+      position: relative;
+      padding: 0;
+      gap: 0;
+    }
+
+    #balloon-frame canvas {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      border: none;
+    }
+  </style>
 </head>
 <body>
-    <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script> 
+  <main class="playroom-frame" id="balloon-frame"></main>
+
+  <script src="../../libraries/p5.min.js"></script>
+  <script src="../../libraries/p5.sound.min.js"></script>
+  <script src="balloon.js"></script>
 </body>
 </html>
