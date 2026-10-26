@@ -44,6 +44,13 @@ function setup() {
 
   textFont("Trebuchet MS");
   strokeJoin(ROUND);
+
+  const requestedGame = new URLSearchParams(window.location.search).get("game");
+  if (requestedGame === "dragon") {
+    hudCurrentGame = 2;
+    hankFinishVisible = false;
+    resetFeedTheDragon();
+  }
 }
 
 let hankFinishVisible = true;
@@ -173,8 +180,8 @@ function mousePressed() {
     return;
   }
   if (isInsideHudButton(mouseX, mouseY, hudButtons.home)) {
-    hudCurrentGame = 0;
-    hudMessage = "Home selected - the game menu will be connected later.";
+    window.location.href = "accessmenu.html";
+    return;
   } else if (isInsideHudButton(mouseX, mouseY, hudButtons.sound)) {
     hudSoundOn = !hudSoundOn;
     hudMessage = hudSoundOn ? "Sound is on." : "Sound is off.";
