@@ -38,6 +38,7 @@ function resetFeedTheDragon() {
 }
 
 function drawFeedTheDragon() {
+  drawDragonGuidePath();
   drawFoodBowl();
   drawSmallDragon();
   drawSpoon();
@@ -61,6 +62,18 @@ function drawFeedTheDragon() {
   textSize(18);
   text(dragonMessage, HUD_WIDTH / 2, 455);
   textStyle(NORMAL);
+}
+
+function drawDragonGuidePath() {
+  noStroke();
+  fill("#D9B97E");
+
+  for (let dot = 0; dot <= 22; dot++) {
+    const amount = dot / 22;
+    const guideX = bezierPoint(bowlX, 390, 590, mouthX, amount);
+    const guideY = bezierPoint(bowlY + 12, 240, 240, mouthY, amount);
+    circle(guideX, guideY, 8);
+  }
 }
 
 function drawFoodBowl() {
