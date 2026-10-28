@@ -1,0 +1,167 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background: #f7e7bd;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+}
+
+.playroom-frame {
+  position: relative;
+  width: min(100%, 970px);
+  aspect-ratio: 960 / 640;
+  border: 5px solid #7b584b;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(89, 67, 58, 0.2);
+  background-image: url("../../assets/images/Screenshot 2026-10-19 at 11.11.27 AM.png");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px;
+}
+
+.outside-button{
+width: 69%;
+/* border: 10px solid red; */
+cursor: pointer;
+
+}
+#menu-button{
+  height: 40px;
+  width: 150px;
+  cursor: pointer;
+  font-size: 3vh;
+  font-weight: 500;
+  background-color: rgb(211, 56, 56);
+  box-shadow: beige;
+}
+
+h1 {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 28px;
+  color: black;
+  font-size: clamp(30px, 5vw, 46px);
+  font-weight: 900;
+  letter-spacing: 5px;
+}
+
+.screen {
+  width: 100%;
+  max-width: 790px;
+  max-height: 100%;
+  padding: 22px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 3px solid rgba(255, 255, 255, 0.96);
+  border-radius: 26px;
+  background: rgb(241, 232, 217);
+}
+
+.wand-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.wand-image {
+  display: block;
+  width: 100%;
+  max-width: 145px;
+  height: 125px;
+  object-fit: contain;
+  border-radius: 14px;
+} 
+.wand-card {
+  min-width: 0;
+  min-height: 225px;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 3px solid white;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.93);
+  cursor: pointer;
+}
+.wand-card:hover{
+  background-color: #f7e7bd;
+
+}
+
+#bubble-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+}
+
+#bubble-container canvas {
+  position: absolute;
+  left: 0;        
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;   
+  pointer-events: none; 
+}
+
+.selected-wand-image {
+  width: 25%;
+  max-width: 220px;
+  max-height: 250px;
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+  flex-shrink: 1;
+  position: relative;
+  z-index: 1;
+}
+.game-buttons {
+  width: 150px;
+  height: 150px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background: white;
+  border: 3px solid black;
+  border-radius: 20px;
+}
+.score-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  color: black;
+}
+#score {
+  font-size: 2.5rem;
+}
+.progress-bar {
+  width: 100%;
+  max-width: 400px;
+  height: 20px;
+  border: 2px solid #7b584b;
+  border-radius: 10px;
+  margin: 14px auto 0;
+  background: #eef2f3;
+}

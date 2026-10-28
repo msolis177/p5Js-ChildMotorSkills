@@ -1,13 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Sketch</title>
+
     <link rel="stylesheet" type="text/css" href="bubbles.css">
-</head>
-<body>
-    <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script> 
-</body>
+ 
+
+    <script src="../../libraries/p5.min.js"></script>
+    <script src="../../libraries/p5.sound.min.js"></script>
+  </head>
+  
+  <body>
+    <div class="outside-button">
+      <button id="menu-button">MENU</button>
+    </div>
+    
+
+   <main class="playroom-frame">
+      <header class="game-header">
+          <h1>BUBBLES</h1>
+      </header>
+
+      <section id="selection-screen" class="screen">
+        <h2>Choose your bubble wand!</h2>
+  
+        <div class="wand-choices">
+           <button class="wand-card" data-wand="0">
+                <img src="../../assets/images/wand1.png" alt="Pink bubble wand" class="wand-image">
+           </button>
+  
+          <button class="wand-card" data-wand="1">
+                <img src="../../assets/images/wand2.png" alt="Blue bubble wand" class="wand-image">
+          </button>
+  
+          <button class="wand-card" data-wand="2">
+                <img src="../../assets/images/wand3.png" alt="Purple bubble wand" class="wand-image">
+           </button>
+        </div>
+      </section>
+
+
+      <section id="game-screen" class="screen">
+        <div id="bubble-container">
+          <img id="selected-wand-image" class="selected-wand-image" src="../../assets/images/wand2.png" alt="Selected bubble wand">
+
+          
+
+          <div class="game-buttons">
+            <div class="score-box">
+            <span>Total bubbles</span>
+            <strong id="score">0</strong>
+          </div>
+          </div>
+
+        </div>
+        <p id="message">Hold the wand to blow a bubble!</p>
+        <div class="progress-bar">
+
+        </div>
+      </section>
+
+   </main>
+
+    <script src="bubbles.js"></script>
+  </body>
 </html>
