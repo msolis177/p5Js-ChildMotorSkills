@@ -7,15 +7,21 @@ let spoonDragging = false;
 let spoonOffsetX = 0;
 let spoonOffsetY = 0;
 let spoonHasFood = false;
-let dragonResult = "idle"; // idle, spilled, missed, or fed
-let dragonMessage = "Drag the spoon into the bowl to scoop food.";
+let dragonResult = "idle"; // idle, spilled, missed, fed, or complete
+let dragonMessage = "Scoop cake, then follow the dots slowly.";
 let lastSpoonMoveTime = 0;
+let spillStartedAt = 0;
+let dragonRoundFinishedAt = 0;
+let dragonFeedsCompleted = 0;
+let dragonGuidePattern = 0;
 
 const bowlX = 300;
 const bowlY = 330;
 const mouthX = 690;
 const mouthY = 334;
 const safeSpoonSpeed = 1400; // pixels per second
+const dragonFeedsNeeded = 3;
+const dragonCenterButton = { x: 370, y: 322, width: 220, height: 58 };
 
 let scoopSound;
 let spillSound;
@@ -28,27 +34,44 @@ function preload() {
 }
 
 function resetFeedTheDragon() {
+  dragonFeedsCompleted = 0;
+  dragonGuidePattern = 0;
+  resetDragonRound();
+}
+
+function resetDragonRound() {
   spoonX = 470;
   spoonY = 255;
   spoonDragging = false;
   spoonHasFood = false;
   dragonResult = "idle";
-  dragonMessage = "Drag the spoon into the bowl to scoop food.";
+  dragonMessage = "Scoop cake, then follow the dots slowly.";
   lastSpoonMoveTime = 0;
+  spillStartedAt = 0;
+  dragonRoundFinishedAt = 0;
+}
+
+function startNextDragonRound() {
+  dragonGuidePattern = (dragonGuidePattern + 1) % 3;
+  resetDragonRound();
 }
 
 function drawFeedTheDragon() {
+  updateDragonRound();
+  drawDragonDirections();
+  drawDragonProgressBar();
   drawDragonGuidePath();
   drawFoodBowl();
   drawSmallDragon();
   drawSpoon();
+  if (dragonResult === "spilled") drawSpilledFood();
 
   noStroke();
   fill("#6B4B3D");
   textAlign(CENTER, CENTER);
   textStyle(BOLD);
   textSize(15);
-  text("FOOD BOWL", bowlX, 420);
+  text("CAKE PLATE", bowlX, 420);
   text("DRAGON'S MOUTH", 700, 420);
 
   if (dragonResult === "fed") {
@@ -62,6 +85,66 @@ function drawFeedTheDragon() {
   textSize(18);
   text(dragonMessage, HUD_WIDTH / 2, 455);
   textStyle(NORMAL);
+
+  if (dragonResult === "spilled" || dragonResult === "missed") {
+    drawDragonFailureScreen();
+  } else if (dragonResult === "complete") {
+    drawDragonCompleteScreen();
+  }
+}
+
+function updateDragonRound() {
+  if (
+    dragonResult === "fed" &&
+    millis() - dragonRoundFinishedAt >= 900
+  ) {
+    startNextDragonRound();
+  }
+}
+
+function drawDragonDirections() {
+  noStroke();
+  fill("#FFF0BF");
+  rect(132, 146, 696, 42, 18);
+
+  fill("#59433A");
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  textSize(14);
+  text("1. SCOOP CAKE   2. FOLLOW THE DOTS SLOWLY   3. FEED 3 TIMES", 480, 167);
+  textStyle(NORMAL);
+}
+
+function drawDragonProgressBar() {
+  const barX = 150;
+  const barY = 202;
+  const barWidth = 230;
+  const barHeight = 18;
+  const filledWidth =
+    (barWidth * dragonFeedsCompleted) / dragonFeedsNeeded;
+
+  stroke("#7B584B");
+  strokeWeight(2);
+  fill("#FFFDF7");
+  rect(barX, barY, barWidth, barHeight, 9);
+
+  if (filledWidth > 0) {
+    noStroke();
+    fill("#74C365");
+    rect(barX, barY, filledWidth, barHeight, 9);
+  }
+
+  noStroke();
+  fill("#59433A");
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  textSize(13);
+  text(
+    "DRAGON FULL " + dragonFeedsCompleted + " / " + dragonFeedsNeeded,
+    barX + barWidth / 2,
+    barY + 31
+  );
+  textStyle(NORMAL);
 }
 
 function drawDragonGuidePath() {
@@ -70,31 +153,46 @@ function drawDragonGuidePath() {
 
   for (let dot = 0; dot <= 22; dot++) {
     const amount = dot / 22;
-    const guideX = bezierPoint(bowlX, 390, 590, mouthX, amount);
-    const guideY = bezierPoint(bowlY + 12, 240, 240, mouthY, amount);
+    const baseX = lerp(bowlX, mouthX, amount);
+    const baseY = lerp(bowlY + 12, mouthY, amount);
+    let guideX = baseX;
+    let guideY = baseY;
+
+    if (dragonGuidePattern === 0) {
+      guideY -= 70 * sin(amount * PI);
+    } else if (dragonGuidePattern === 1) {
+      guideY -= 38 * sin(amount * TWO_PI * 1.5);
+    } else {
+      guideX += 32 * sin(amount * TWO_PI);
+      guideY -= 55 * sin(amount * PI);
+    }
+
     circle(guideX, guideY, 8);
   }
 }
 
 function drawFoodBowl() {
-  // Food sits inside the red bowl on the left side of the game area.
+  // Simple cake pieces sit on a plate on the left side of the game area.
   noStroke();
-  fill("#AD3C31");
-  ellipse(bowlX, bowlY + 35, 166, 94);
-  fill("#E75B4B");
-  ellipse(bowlX, bowlY + 14, 178, 42);
-  fill("#F8B557");
-  ellipse(bowlX, bowlY + 10, 138, 26);
+  fill("#DCE3E5");
+  ellipse(bowlX, bowlY + 34, 178, 54);
+  fill("#FFFDF7");
+  ellipse(bowlX, bowlY + 28, 154, 36);
 
-  fill("#7EBB5D");
-  circle(bowlX - 42, bowlY + 8, 18);
-  circle(bowlX + 2, bowlY + 4, 16);
-  circle(bowlX + 42, bowlY + 10, 18);
+  fill("#F6C56E");
+  rect(bowlX - 58, bowlY - 8, 116, 48, 8);
+  fill("#F47A8A");
+  rect(bowlX - 58, bowlY - 8, 116, 15, 7);
 
-  stroke("#8D302A");
+  fill("#FFFDF7");
+  circle(bowlX - 34, bowlY - 1, 5);
+  circle(bowlX, bowlY + 1, 5);
+  circle(bowlX + 34, bowlY - 1, 5);
+
+  stroke("#7B858A");
   strokeWeight(3);
   noFill();
-  arc(bowlX, bowlY + 15, 178, 40, 0, PI);
+  arc(bowlX, bowlY + 29, 154, 34, 0, PI);
 }
 
 function drawSmallDragon() {
@@ -154,11 +252,112 @@ function drawSpoon() {
 
   if (spoonHasFood) {
     noStroke();
-    fill("#F8B557");
+    fill("#F6C56E");
     ellipse(spoonX, spoonY - 4, 35, 16);
-    fill("#7EBB5D");
-    circle(spoonX - 8, spoonY - 6, 8);
+    fill("#F47A8A");
+    ellipse(spoonX, spoonY - 8, 28, 7);
   }
+}
+
+function drawSpilledFood(onFloor = false) {
+  // Show a few simple food pieces falling from the spoon.
+  const progress = onFloor
+    ? 1
+    : constrain((millis() - spillStartedAt) / 650, 0, 1);
+  const foodX = onFloor ? constrain(spoonX, 190, 770) : spoonX;
+  const fallDistance =
+    progress * progress * max(12, min(70, 405 - spoonY));
+  const foodY = onFloor ? 430 : spoonY + fallDistance;
+
+  push();
+  noStroke();
+  fill("#F6C56E");
+  ellipse(foodX - 14 - progress * 18, foodY, 18, 11);
+  circle(foodX + 3, foodY + progress * 6, 12);
+  circle(foodX + 24 + progress * 20, foodY + progress * 3, 10);
+
+  fill("#F47A8A");
+  circle(foodX + 15 + progress * 14, foodY - progress * 5, 9);
+  pop();
+}
+
+function drawDragonFailureScreen() {
+  noStroke();
+  fill(255, 245, 217, 220);
+  rect(108, 124, 744, 352, 30);
+
+  if (dragonResult === "spilled") drawSpilledFood(true);
+
+  stroke("#D9B97E");
+  strokeWeight(4);
+  fill("#FFFDF7");
+  rect(276, 238, 408, 166, 24);
+
+  noStroke();
+  fill("#C54D46");
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  textSize(28);
+  text(dragonResult === "spilled" ? "CAKE SPILLED!" : "MISSED THE MOUTH!", 480, 274);
+
+  fill("#59433A");
+  textSize(15);
+  text("Your progress is back to 0. Follow the new path and try again.", 480, 302);
+  textStyle(NORMAL);
+
+  drawHudButton(dragonCenterButton, "TRY AGAIN", "#F47A5A");
+}
+
+function drawDragonCompleteScreen() {
+  noStroke();
+  fill(255, 245, 217, 230);
+  rect(108, 124, 744, 352, 30);
+
+  stroke("#74C365");
+  strokeWeight(4);
+  fill("#FFFDF7");
+  rect(276, 238, 408, 166, 24);
+
+  noStroke();
+  fill("#2F884B");
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  textSize(29);
+  text("THE DRAGON IS FULL!", 480, 274);
+
+  fill("#59433A");
+  textSize(16);
+  text("You delivered 3 cake bites without spilling.", 480, 304);
+  textStyle(NORMAL);
+
+  drawHudButton(dragonCenterButton, "PLAY AGAIN", "#74C365");
+}
+
+function feedDragonResultMousePressed() {
+  const showingResult =
+    dragonResult === "spilled" ||
+    dragonResult === "missed" ||
+    dragonResult === "complete";
+
+  if (!showingResult || !isInsideHudButton(mouseX, mouseY, dragonCenterButton)) {
+    return false;
+  }
+
+  if (dragonResult === "complete") {
+    resetFeedTheDragon();
+  } else {
+    startNextDragonRound();
+  }
+  return true;
+}
+
+function isOverDragonResultButton() {
+  return (
+    (dragonResult === "spilled" ||
+      dragonResult === "missed" ||
+      dragonResult === "complete") &&
+    isInsideHudButton(mouseX, mouseY, dragonCenterButton)
+  );
 }
 
 function feedDragonMousePressed() {
@@ -190,7 +389,7 @@ function feedDragonMouseDragged() {
 
   if (!spoonHasFood && dist(spoonX, spoonY, bowlX, bowlY + 12) < 73) {
     spoonHasFood = true;
-    dragonMessage = "Food collected! Move slowly to the dragon's mouth.";
+    dragonMessage = "Cake collected! Follow the dots slowly.";
     playDragonSound(scoopSound);
   } else if (
     spoonHasFood &&
@@ -198,7 +397,9 @@ function feedDragonMouseDragged() {
     speed > safeSpoonSpeed
   ) {
     dragonResult = "spilled";
-    dragonMessage = "Oops! The food spilled. Press Try Again.";
+    dragonFeedsCompleted = 0;
+    dragonMessage = "Oops! The cake spilled.";
+    spillStartedAt = now;
     spoonHasFood = false;
     spoonDragging = false;
     playDragonSound(spillSound);
@@ -210,22 +411,32 @@ function feedDragonMouseReleased() {
   spoonDragging = false;
 
   if (!spoonHasFood) {
-    dragonMessage = "Scoop food from the bowl first.";
+    dragonMessage = "Scoop cake from the plate first.";
     return;
   }
 
   if (dist(spoonX, spoonY, mouthX, mouthY) < 39) {
-    dragonResult = "fed";
-    dragonMessage = "Great job! You fed the dragon!";
+    dragonFeedsCompleted += 1;
     spoonHasFood = false;
     playDragonSound(successSound);
+
+    if (dragonFeedsCompleted >= dragonFeedsNeeded) {
+      dragonResult = "complete";
+      dragonMessage = "Great job! The dragon is full!";
+    } else {
+      dragonResult = "fed";
+      dragonRoundFinishedAt = millis();
+      dragonMessage =
+        "Great! " + (dragonFeedsNeeded - dragonFeedsCompleted) + " cake bites to go.";
+    }
   } else if (spoonX > 610) {
     dragonResult = "missed";
-    dragonMessage = "Missed the mouth. Press Try Again.";
+    dragonFeedsCompleted = 0;
+    dragonMessage = "Missed the mouth.";
     spoonHasFood = false;
     playDragonSound(spillSound);
   } else {
-    dragonMessage = "Keep moving slowly toward the dragon's mouth.";
+    dragonMessage = "Keep following the dots slowly toward the dragon.";
   }
 }
 
