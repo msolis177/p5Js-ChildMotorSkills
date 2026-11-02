@@ -336,6 +336,9 @@ function mouseReleased() {
       x: 470 - size * 0.71,
       y: 350 - (size * 496 / 420) * 0.83
     });
+    if (floatingBalloons.length === 3) {
+  localStorage.setItem("tinyTots.balloonsComplete", "true");
+}
   }
 
   balloonPressure = 0;

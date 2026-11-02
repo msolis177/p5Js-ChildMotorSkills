@@ -7,6 +7,41 @@
     <link rel="stylesheet" href="style2.css" />
   </head>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+  const balloonTile = document.querySelector(
+    '[aria-label="Balloon Game"]'
+  );
+
+  if (localStorage.getItem("tinyTots.balloonsComplete") === "true") {
+    balloonTile.style.position = "relative";
+
+    const checkmark = document.createElement("span");
+    checkmark.textContent = "✓";
+    checkmark.style.cssText = `
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #569d38;
+      color: white;
+      font-size: 30px;
+      line-height: 40px;
+      text-align: center;
+      pointer-events: none;
+    `;
+
+    balloonTile.appendChild(checkmark);
+    balloonTile.setAttribute(
+      "aria-label",
+      "Balloon Game completed"
+    );
+  }
+  });
+</script>
   <body>
     <main class="playroom-frame">
       <button class="back-button" onclick="history.back()">Back</button>
