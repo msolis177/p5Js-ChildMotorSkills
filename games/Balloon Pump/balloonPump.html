@@ -1,14 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="balloon.css">
     <title>Document</title>
     <script src="global.js"></script>
+=======
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pump It Up!</title>
+  <link rel="stylesheet" href="../../style.css">
+
+  <style>
+    #balloon-frame {
+      position: relative;
+      padding: 0;
+      gap: 0;
+    }
+
+    #balloon-frame canvas {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      border: none;
+    }
+  .progress-bar {
+  position: absolute;
+  z-index: 1;
+  top: 17%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42%;
+  max-width: 400px;
+  height: 20px;
+  border: 2px solid #7b584b;
+  border-radius: 10px;
+  background: #eef2f3;
+  pointer-events: none;
+}
+  </style>
+>>>>>>> b745d3aab0aecd67565a3298337a6e8afa939739
 </head>
 <body>
-    <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script> 
+  <main class="playroom-frame" id="balloon-frame">
+  <div class="progress-bar"></div>
+</main>
+
+  <script src="../../libraries/p5.min.js"></script>
+  <script src="../../libraries/p5.sound.min.js"></script>
+  <script src="balloon.js"></script>
 </body>
 </html>
