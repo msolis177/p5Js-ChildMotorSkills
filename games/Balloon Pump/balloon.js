@@ -2,13 +2,25 @@ let floatingBalloons = [];
 let balloonPressure = 0;
 let holdingPump = false;
 let lastPumpTime = Date.now();
+let popUntil = 0;
 
+let elephantPicture;
 let pumpPicture;
 let balloonPicture;
 let balloonBackground;
 
-let message = "Hold the handle. Release when the bar is past halfway!";
-let popUntil = 0;
+const balloonPlaces = [
+  { x: 540, y: 160 },
+  { x: 635, y: 140 },
+  { x: 730, y: 165 }
+];
+
+const nextButton = {
+  x: 410,
+  y: 570,
+  width: 140,
+  height: 55
+};
 
 function preload() {
   balloonBackground = loadImage(
@@ -20,11 +32,16 @@ function preload() {
   balloonPicture = loadImage(
     "../../assets/images/red-balloon.gif"
   );
+  elephantPicture = loadImage(
+    "../../assets/images/elephant-cartoon.png"
+  );
 }
 
 function setup() {
   const balloonCanvas = createCanvas(960, 640);
   balloonCanvas.parent("balloon-frame");
+
+  window.addEventListener("blur", cancelPump);
 }
 
 function draw() {
@@ -32,9 +49,10 @@ function draw() {
   const seconds = Math.min((now - lastPumpTime) / 1000, 0.1);
   lastPumpTime = now;
 
-  const popping = now < popUntil;
+  const complete = floatingBalloons.length >= 3;
 
-  if (holdingPump && !popping) {
+  // Holding the handle fills the balloon.
+  if (holdingPump && now >= popUntil && !complete) {
     balloonPressure = Math.min(
       100,
       balloonPressure + seconds * 20
@@ -44,74 +62,12 @@ function draw() {
       holdingPump = false;
       balloonPressure = 0;
       popUntil = now + 900;
-      message = "Pop! Try again—release a little sooner.";
-    } else if (balloonPressure >= 80) {
-      message = "Careful! Let go before it pops!";
-    } else if (balloonPressure >= 60) {
-      message = "Ready! Let go to keep your balloon!";
     }
   }
 
-  // Match the bubble game's green fill.
-  // Red remains visible ahead of the fill as a danger zone.
-  const bar = document.querySelector(".progress-bar");
-
-  if (bar) {
-    const fillColor =
-      balloonPressure >= 80 ? "#ef5350" : "#a8ff78";
-
-    bar.style.background =
-      `linear-gradient(to right,
-        ${fillColor} 0%,
-        ${fillColor} ${balloonPressure}%,
-        transparent ${balloonPressure}%,
-        transparent 100%),
-       linear-gradient(to right,
-        #eef2f3 0%,
-        #eef2f3 60%,
-        #d9f7cb 60%,
-        #d9f7cb 80%,
-        #ffc4c4 80%,
-        #ffc4c4 100%)`;
-
-    bar.style.overflow = "hidden";
-    bar.style.boxShadow =
-      balloonPressure >= 80
-        ? "0 0 10px rgba(239, 83, 80, 0.6)"
-        : "none";
-  }
+  updatePressureBar();
 
   image(balloonBackground, 0, 0, width, height);
-
-  // Finished balloons stay inside the frame.
-  for (const balloon of floatingBalloons) {
-    balloon.x += balloon.vx * seconds;
-    balloon.y += balloon.vy * seconds;
-
-    if (balloon.x < 110) {
-      balloon.x = 110;
-      balloon.vx = Math.abs(balloon.vx);
-    } else if (balloon.x > 700) {
-      balloon.x = 700;
-      balloon.vx = -Math.abs(balloon.vx);
-    }
-
-    if (balloon.y < 145) {
-      balloon.y = 145;
-      balloon.vy = Math.abs(balloon.vy);
-    } else if (balloon.y > 360) {
-      balloon.y = 360;
-      balloon.vy = -Math.abs(balloon.vy);
-    }
-
-    image(
-      balloonPicture,
-      balloon.x,
-      balloon.y,
-      150,
-      150 * 496 / 420
-    );
-  }
 
   noStroke();
   fill("#59433A");
@@ -119,18 +75,72 @@ function draw() {
   textSize(34);
   text("PUMP IT UP!", 480, 60);
 
-  textSize(16);
-  text("FILL → READY → DANGER", 480, 95);
 
-  image(pumpPicture, 180, 180, 500, 281);
+  // Completed balloons drift to Elephant and bob on strings.
+  for (let i = 0; i < floatingBalloons.length; i++) {
+    const balloon = floatingBalloons[i];
+    const place = balloonPlaces[i];
 
-  if (Date.now() < popUntil) {
-    // Brief burst where the balloon was.
-    stroke("#ef5350");
+    const targetX =
+      place.x + Math.sin(now / 900 + i * 2) * 8;
+
+    const targetY =
+      place.y + Math.sin(now / 1100 + i * 2) * 6;
+
+    const movement = 1 - Math.exp(-seconds * 2);
+
+    balloon.x += (targetX - balloon.x) * movement;
+    balloon.y += (targetY - balloon.y) * movement;
+
+    stroke("#7B584B");
+    strokeWeight(2);
+
+    line(
+      640, 332,
+      balloon.x + 78, balloon.y + 103
+    );
+
+    noStroke();
+    drawBalloon(balloon.x, balloon.y, 110);
+  }
+
+ image(pumpPicture, 180, 180, 500, 281);
+
+// Redraw only the handle area with a soft golden glow.
+if (!holdingPump && now >= popUntil && !complete) {
+  const pulse = (Math.sin(now / 300) + 1) / 2;
+
+  drawingContext.save();
+  drawingContext.shadowColor = "#FFD447";
+  drawingContext.shadowBlur = 25 + pulse * 30;
+
+  image(
+    pumpPicture,
+    180, 180, 205, 78,
+    0, 0,
+    pumpPicture.width * 0.41,
+    pumpPicture.height * 78 / 281
+  );
+  // Draw a second glow layer to make it brighter.
+image(
+  pumpPicture,
+  180, 180, 205, 78,
+  0, 0,
+  pumpPicture.width * 0.41,
+  pumpPicture.height * 78 / 281
+);
+
+  drawingContext.restore();
+}
+
+  if (now < popUntil) {
+    // A brief burst when the balloon pops.
+    stroke("#EF5350");
     strokeWeight(4);
 
     for (let i = 0; i < 12; i++) {
       const angle = i * Math.PI / 6;
+
       line(
         470 + Math.cos(angle) * 28,
         280 + Math.sin(angle) * 28,
@@ -138,75 +148,201 @@ function draw() {
         280 + Math.sin(angle) * 65
       );
     }
+  } else if (!complete) {
+    const size = 35 + balloonPressure * 1.15;
 
-    noStroke();
-    fill("#59433A");
-    textSize(28);
-    text("POP!", 470, 280);
-  } else {
-    const balloonWidth = 35 + balloonPressure * 1.15;
-    const balloonHeight = balloonWidth * 496 / 420;
-
-    image(
-      balloonPicture,
-      470 - balloonWidth * 0.71,
-      350 - balloonHeight * 0.83,
-      balloonWidth,
-      balloonHeight
+    drawBalloon(
+      470 - size * 0.71,
+      350 - (size * 496 / 420) * 0.83,
+      size
     );
   }
+  // A large hand points diagonally toward the handle.
+if (!holdingPump && now >= popUntil && !complete) {
+  const approach = (Math.sin(now / 350) + 1) / 2;
 
-  stroke("#7B584B");
+  push();
+  translate(200 + approach * 6, 155 + approach * 6);
+  rotate(-Math.PI / 4);
+  textAlign(CENTER, CENTER);
+  textSize(64);
+  noStroke();
+  text("👇", 0, 0);
+  pop();
+}
+  image(elephantPicture, 620, 290, 190, 205);
+  // Three matching balloon slots show progress.
+for (let i = 0; i < 3; i++) {
+  const x = 337 + i * 100;
+  const earned = i < floatingBalloons.length;
+
+  push();
+
+  // A separate slot makes this a tracker, not floating balloons.
+  stroke(earned ? "#74A64A" : "#B7AAA0");
   strokeWeight(2);
   fill("#FFFEF8");
-  rect(650, 220, 140, 130, 8);
 
-  noStroke();
-  fill("#59433A");
-  textSize(24);
-  text("TOTAL:", 720, 250);
+  drawingContext.setLineDash(earned ? [] : [5, 5]);
+  rect(x, 490, 86, 74, 12);
+  drawingContext.setLineDash([]);
 
-  textSize(48);
-  text(floatingBalloons.length, 720, 305);
+  // Use the actual balloon artwork with its original proportions.
+  drawingContext.save();
 
-  textSize(20);
-  text(message, 480, 490);
+  if (!earned) {
+    drawingContext.filter = "grayscale(1)";
+    drawingContext.globalAlpha = 0.3;
+  }
+
+  drawBalloon(x - 2, 494, 64);
+  drawingContext.restore();
+
+  if (earned) {
+    stroke("#569D38");
+    strokeWeight(3);
+    line(x + 61, 551, x + 67, 557);
+    line(x + 67, 557, x + 78, 543);
+  }
+
+  pop();
+}
+
+  // Lifting finger and upward arrow cue the child to release.
+  if (holdingPump && balloonPressure >= 60) {
+    noStroke();
+    fill("#59433A");
+    textSize(46);
+
+    const lift = (Math.sin(now / 250) + 1) * 8;
+    text("☝️", 280, 295 - lift);
+
+    stroke(
+      balloonPressure >= 80 ? "#EF5350" : "#569D38"
+    );
+    strokeWeight(5);
+
+    line(330, 300, 330, 265);
+    line(330, 265, 320, 277);
+    line(330, 265, 340, 277);
+  }
+
+  if (complete) {
+    // Checkmark shows the task is finished.
+    stroke("#569D38");
+    strokeWeight(6);
+
+    line(710, 515, 722, 527);
+    line(722, 527, 747, 500);
+
+    // Large arrow button continues to the menu.
+    stroke("#7B584B");
+    strokeWeight(3);
+    fill("#FFE6A3");
+
+    rect(
+      nextButton.x,
+      nextButton.y,
+      nextButton.width,
+      nextButton.height,
+      18
+    );
+
+    stroke("#59433A");
+    strokeWeight(6);
+
+    line(452, 598, 508, 598);
+    line(508, 598, 490, 583);
+    line(508, 598, 490, 613);
+  }
+}
+
+// Crop away the string built into the balloon picture.
+function drawBalloon(x, y, size) {
+  image(
+    balloonPicture,
+    x, y,
+    size, size,
+    0, 0, 420, 420
+  );
+}
+
+function updatePressureBar() {
+  const bar = document.querySelector(".progress-bar");
+  if (!bar) return;
+
+  const color =
+    balloonPressure >= 80 ? "#EF5350" : "#A8FF78";
+
+  bar.style.background =
+    `linear-gradient(to right,
+      ${color} 0%,
+      ${color} ${balloonPressure}%,
+      transparent ${balloonPressure}%,
+      transparent 100%),
+     linear-gradient(to right,
+      #EEF2F3 0%,
+      #EEF2F3 60%,
+      #D9F7CB 60%,
+      #D9F7CB 80%,
+      #FFC4C4 80%,
+      #FFC4C4 100%)`;
+
+  bar.style.overflow = "hidden";
+
+  bar.style.boxShadow =
+    balloonPressure >= 80
+      ? "0 0 10px rgba(239,83,80,0.6)"
+      : "none";
+}
+
+function insideButton(x, y, button) {
+  return (
+    x >= button.x &&
+    x <= button.x + button.width &&
+    y >= button.y &&
+    y <= button.y + button.height
+  );
 }
 
 function mousePressed() {
+  if (floatingBalloons.length >= 3) {
+    if (insideButton(mouseX, mouseY, nextButton)) {
+      window.location.href = "../../accessmenu.html";
+    }
+    return;
+  }
+
   if (Date.now() < popUntil) return;
 
-  holdingPump =
-    mouseX >= 180 && mouseX <= 365 &&
-    mouseY >= 180 && mouseY <= 255;
-
-  if (holdingPump) {
-    message = "Keep holding—watch the bar!";
-  }
+  // Generous press area around the handle.
+  holdingPump = insideButton(mouseX, mouseY, {
+    x: 180,
+    y: 180,
+    width: 185,
+    height: 75
+  });
 }
 
 function mouseReleased() {
-  // Releasing after a pop cannot award a balloon.
   if (!holdingPump) return;
 
   holdingPump = false;
 
-  if (balloonPressure >= 60) {
-    const balloonWidth = 35 + balloonPressure * 1.15;
-    const balloonHeight = balloonWidth * 496 / 420;
+  if (balloonPressure >= 60 && floatingBalloons.length < 3) {
+    const size = 35 + balloonPressure * 1.15;
 
     floatingBalloons.push({
-      x: 470 - balloonWidth * 0.71,
-      y: 350 - balloonHeight * 0.83,
-      vx: (Math.random() < 0.5 ? -1 : 1) *
-          (20 + Math.random() * 20),
-      vy: -(20 + Math.random() * 20)
+      x: 470 - size * 0.71,
+      y: 350 - (size * 496 / 420) * 0.83
     });
-
-    message = "You did it! Hold the handle to make another.";
-  } else {
-    message = "A little more air next time! Try again.";
   }
 
+  balloonPressure = 0;
+}
+
+// Leaving the browser tab cancels pumping.
+function cancelPump() {
+  holdingPump = false;
   balloonPressure = 0;
 }

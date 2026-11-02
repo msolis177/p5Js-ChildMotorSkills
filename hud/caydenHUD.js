@@ -133,8 +133,11 @@ function drawGamePlaceholder() {
 }
 
 function drawHudFooter() {
-  drawHudButton(hudButtons.tryAgain, "TRY AGAIN", "#F47A5A");
-  drawHudButton(hudButtons.next, "NEXT", "#F47A5A");
+  // Feed the Dragon uses one centered result button so the activity stays simple.
+  if (hudCurrentGame !== 2) {
+    drawHudButton(hudButtons.tryAgain, "TRY AGAIN", "#F47A5A");
+    drawHudButton(hudButtons.next, "NEXT", "#F47A5A");
+  }
 
   const firstDotX = 426;
   const dotGap = 36;
@@ -185,13 +188,17 @@ function mousePressed() {
   } else if (isInsideHudButton(mouseX, mouseY, hudButtons.sound)) {
     hudSoundOn = !hudSoundOn;
     hudMessage = hudSoundOn ? "Sound is on." : "Sound is off.";
-  } else if (isInsideHudButton(mouseX, mouseY, hudButtons.tryAgain)) {
-    if (hudCurrentGame === 2) {
-      resetFeedTheDragon();
-    } else {
-      hudMessage = "Try Again selected - this activity is ready to restart.";
-    }
-  } else if (isInsideHudButton(mouseX, mouseY, hudButtons.next)) {
+  } else if (hudCurrentGame === 2 && feedDragonResultMousePressed()) {
+    return;
+  } else if (
+    hudCurrentGame !== 2 &&
+    isInsideHudButton(mouseX, mouseY, hudButtons.tryAgain)
+  ) {
+    hudMessage = "Try Again selected - this activity is ready to restart.";
+  } else if (
+    hudCurrentGame !== 2 &&
+    isInsideHudButton(mouseX, mouseY, hudButtons.next)
+  ) {
     hudCurrentGame = (hudCurrentGame + 1) % hudGames.length;
     if (hudCurrentGame === 2) resetFeedTheDragon();
     hudMessage = "Now previewing " + hudGames[hudCurrentGame].title + ".";
@@ -221,8 +228,10 @@ function updateHudCursor() {
   const overButton =
     isInsideHudButton(mouseX, mouseY, hudButtons.home) ||
     isInsideHudButton(mouseX, mouseY, hudButtons.sound) ||
-    isInsideHudButton(mouseX, mouseY, hudButtons.tryAgain) ||
-    isInsideHudButton(mouseX, mouseY, hudButtons.next);
+    (hudCurrentGame !== 2 &&
+      (isInsideHudButton(mouseX, mouseY, hudButtons.tryAgain) ||
+        isInsideHudButton(mouseX, mouseY, hudButtons.next))) ||
+    (hudCurrentGame === 2 && isOverDragonResultButton());
   const overSpoon =
     hudCurrentGame === 2 &&
     dragonResult === "idle" &&
