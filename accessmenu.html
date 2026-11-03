@@ -5,43 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Choose a Game</title>
     <link rel="stylesheet" href="style2.css" />
-    <script src="global.js"></script>
+    <script src="Global.js"></script>
   </head>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
 
-  const balloonTile = document.querySelector(
-    '[aria-label="Balloon Game"]'
-  );
+    const games = [
+        {
+            name: "balloons",
+            label: "Balloon Game"
+        },
+        {
+            name: "pouring",
+            label: "Pouring Game"
+        },
+        {
+            name: "feedMe",
+            label: "Feed Me Game"
+        },
+        {
+            name: "bubbles",
+            label: "Bubbles Game"
+        }
+    ];
 
-  if (localStorage.getItem("tinyTots.balloonsComplete") === "true") {
-    balloonTile.style.position = "relative";
+     games.forEach(game => {
+        const gameTile = document.querySelector(
+            `[aria-label="${game.label}"]`
+        );
 
-    const checkmark = document.createElement("span");
-    checkmark.textContent = "✓";
-    checkmark.style.cssText = `
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #569d38;
-      color: white;
-      font-size: 30px;
-      line-height: 40px;
-      text-align: center;
-      pointer-events: none;
-    `;
+        if (gameTile && localStorage.getItem(`tinyTots.${game.name}Complete`) === "true") {
+            gameTile.style.position = "relative";
 
-    balloonTile.appendChild(checkmark);
-    balloonTile.setAttribute(
-      "aria-label",
-      "Balloon Game completed"
+            const checkmark = document.createElement("span");
+            checkmark.textContent = "✓";
+            checkmark.style.cssText = `
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: #569d38;
+                color: white;
+                font-size: 30px;
+                line-height: 40px;
+                text-align: center;
+                pointer-events: none;
+            `;
+
+            gameTile.appendChild(checkmark);
+            gameTile.setAttribute("aria-label", game.label + " completed");
+        }
+    });
+
+    const allGamesCompleted = games.every(game =>
+        localStorage.getItem(`tinyTots.${game.name}Complete`) === "true"
     );
-  }
-  });
+
+    if (allGamesCompleted) {
+        window.location.href = "finishScreen.html";
+    }
+});
 </script>
   <body>
     <main class="playroom-frame">

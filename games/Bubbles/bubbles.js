@@ -1,7 +1,10 @@
-let wandImages = ["../../assets/images/AnimalPinkBubbleWand.png", "../../assets/images/AnimalBlueBubbleWand.png", "../../assets/images/AnimalPurpleBubbleWand.png"];
+let wandImages = ["../../assets/images/AnimalPinkBubbleWand.png","../../assets/images/AnimalBlueBubbleWand.png","../../assets/images/AnimalPurpleBubbleWand.png"];
+
 let bubbleSize = 0;
 let maxBubbleSize = 100;
 let totalBubbles = 0;
+const bubblesTarget = 4;
+
 let chosenWand = 0;
 let canvas;
 
@@ -19,8 +22,17 @@ let bubbleX = 210;
 let bubbleY = 70;
 let bubbleReady = false;
 
-document.querySelectorAll(".wand-card").forEach(function(button) {
+let successSound;
+let popSound;
+let failureSound;
 
+function preload() {
+  successSound = loadSound("../../assets/sounds/SuccessSound.mp3");
+  popSound = loadSound("../../assets/sounds/pop.wav");
+  failureSound = loadSound("../../assets/sounds/failure.mp3");
+}
+
+document.querySelectorAll(".wand-card").forEach(function(button) {
   button.addEventListener("click", function() {
     chosenWand = Number(button.dataset.wand);
     let selectedImage = wandImages[chosenWand];
@@ -30,7 +42,6 @@ document.querySelectorAll(".wand-card").forEach(function(button) {
     resetRound();
   });
 });
-
 
 function setup() {
   document.getElementById("game-screen").style.display = "none";
@@ -50,7 +61,6 @@ function draw() {
   if (gamePhase === "bubble") {
     if (!bubbleReady) {
       bubbleSize += 1.5;
-
       if (bubbleSize >= maxBubbleSize) {
         bubbleSize = maxBubbleSize;
         bubbleReady = true;
@@ -65,11 +75,9 @@ function draw() {
     fill(51);
     noStroke();
     textAlign(CENTER, CENTER);
-    textSize(18);
-  
-    let fingerBounce = sin(frameCount * .12) * 3;
+    let fingerBounce = sin(frameCount * 0.12) * 3;
     textSize(30);
-    let fingerX = bubbleX + 30; 
+    let fingerX = bubbleX + 30;
     let fingerY = bubbleY - bubbleSize / 2 + 50 + fingerBounce;
     text("POP!", fingerX, fingerY);
   }
@@ -80,21 +88,17 @@ function drawTracingCircle() {
   textSize(18);
   fill(51);
   noStroke();
-
   let totalDots = 40;
 
   for (let i = 0; i < totalDots; i++) {
     let angle = -HALF_PI + (i / totalDots) * TWO_PI;
-
     let x = circleX + cos(angle) * circleRadius;
     let y = circleY + sin(angle) * circleRadius;
-
     if (i < traceProgress * totalDots) {
-      fill('rgb(0, 255, 0)');
+      fill("rgb(0, 255, 0)");
     } else {
       fill(200);
     }
-
     noStroke();
     circle(x, y, 11);
   }
@@ -105,20 +109,15 @@ function drawTracingCircle() {
   fill(51);
   textSize(17);
   text("START HERE!", circleX, circleY - circleRadius - 22);
-
-  // Draw the clockwise arrow
   drawClockwiseArrow();
 }
 
 function drawClockwiseArrow() {
   let arrowRadius = circleRadius + 22;
-
   noFill();
   stroke(255, 190, 40);
   strokeWeight(5);
-
-  arc(circleX,circleY,arrowRadius * 2,arrowRadius * 2, -PI / 3,PI / 3 );
-
+  arc(circleX,circleY,arrowRadius * 2,arrowRadius * 2,-PI / 3,PI / 3);
 
   let angle = PI / 3;
   let tipX = circleX + cos(angle) * arrowRadius;
@@ -152,12 +151,11 @@ function startTracing(x, y) {
 function continueTracing(x, y) {
   if (!isTracing || gamePhase !== "trace") return;
   let currentDistance = dist(x, y, circleX, circleY);
-
   if (abs(currentDistance - circleRadius) > 30) {
     return;
   }
 
-  let currentAngle = atan2(y - circleY,x - circleX);
+  let currentAngle = atan2(y - circleY, x - circleX);
   let angleDifference = currentAngle - lastTraceAngle;
 
   while (angleDifference > PI) {
@@ -180,14 +178,16 @@ function continueTracing(x, y) {
     gamePhase = "bubble";
     bubbleSize = 0;
     bubbleReady = false;
-
+    successSound.play();
     document.getElementById("message").innerText = "Hurray!";
   }
+
 }
 
 function stopTracing() {
   if (gamePhase === "trace" && isTracing) {
     isTracing = false;
+
     if (traceProgress < 0.98) {
       triggerBubbleFailure();
     }
@@ -198,7 +198,6 @@ function drawOrganicBubble(x, y, currentSize) {
   push();
   translate(x, y);
   let wobbleFactor = map(currentSize, 0, maxBubbleSize, 1, 7);
-
   stroke(180, 210, 255, 220);
   strokeWeight(2.5);
   fill(230, 245, 255, 55);
@@ -214,15 +213,15 @@ function drawOrganicBubble(x, y, currentSize) {
   endShape(CLOSE);
   noStroke();
   fill(255, 255, 255, 190);
-
-  ellipse(-currentSize * 0.18, -currentSize * 0.18, currentSize * 0.12, currentSize * 0.08);
+  ellipse(-currentSize * 0.18, -currentSize * 0.18, currentSize * 0.12,currentSize * 0.08);
   pop();
 }
 
 function mousePressed() {
+   userStartAudio();
   if (gamePhase === "trace") {
     startTracing(mouseX, mouseY);
-  }else if (gamePhase === "bubble" && bubbleReady) {
+  } else if (gamePhase === "bubble" && bubbleReady) {
     let distanceFromBubble = dist(mouseX, mouseY, bubbleX, bubbleY);
 
     if (distanceFromBubble < bubbleSize / 2 + 15) {
@@ -231,21 +230,23 @@ function mousePressed() {
   }
 }
 
+
 function mouseDragged() {
   continueTracing(mouseX, mouseY);
   return false;
 }
+
 
 function mouseReleased() {
   stopTracing();
 }
 
 function touchStarted() {
+   userStartAudio();
   if (gamePhase === "trace") {
     startTracing(mouseX, mouseY);
-  }else if (gamePhase === "bubble" && bubbleReady) {
+  } else if (gamePhase === "bubble" && bubbleReady) {
     let distanceFromBubble = dist(mouseX, mouseY, bubbleX, bubbleY);
-
     if (distanceFromBubble < bubbleSize / 2 + 15) {
       triggerBubbleSuccess();
     }
@@ -266,22 +267,34 @@ function touchEnded() {
 function triggerBubbleSuccess() {
   if (gamePhase !== "bubble" || !bubbleReady) return;
   gamePhase = "success";
+  popSound.play();
   totalBubbles++;
-  document.getElementById("score").innerText = totalBubbles;
-  document.getElementById("next-button").style.display = "block";
+  updateBubbleTally();
+
+  if (totalBubbles >= bubblesTarget) {
+    localStorage.setItem("tinyTots.bubblesComplete","true");
+    document.getElementById("message").innerText = "Yay you did it!";
+    document.getElementById("next-button").style.display = "block";
+    return;
+  }
+
+  document.getElementById("message").innerText = "Yay!";
+  document.getElementById("next-button").style.display = "none";
+
   setTimeout(function() {
     resetRound();
-    document.getElementById("message").innerText = "Let's make another bubble!";
+    document.getElementById("message").innerText = "Blow a bubble!";
   }, 1200);
-
 }
 
 function triggerBubbleFailure() {
   gamePhase = "failed";
   isTracing = false;
+  failureSound.play();
   totalBubbles = 0;
-  document.getElementById("score").innerText = 0;
-  document.getElementById("message").innerText ="Oops!Try again!";
+  updateBubbleTally();
+  document.getElementById("message").innerText ="Oops! Try again!";
+  document.getElementById("next-button").style.display = "none";
   document.getElementById("try-again-button").style.display = "block";
 }
 
@@ -296,7 +309,27 @@ function resetRound() {
 
 function resetGame() {
   totalBubbles = 0;
-  document.getElementById("score").innerText = 0;
+  updateBubbleTally();
+  document.getElementById("next-button").style.display = "none";
   resetRound();
-
 }
+
+function updateBubbleTally() {
+  const bubbles = document.querySelectorAll(".tally-bubble");
+  bubbles.forEach(function(bubble, index) {
+
+    if (index < totalBubbles) {
+      bubble.classList.add("filled");
+    } else {
+      bubble.classList.remove("filled");
+    }
+  });
+  document.getElementById("score").innerText = totalBubbles;
+}
+document.getElementById("next-button").addEventListener("click", function() {
+
+  if (totalBubbles >= bubblesTarget) {
+    window.location.href = "../../accessmenu.html";
+  }
+});
+updateBubbleTally();

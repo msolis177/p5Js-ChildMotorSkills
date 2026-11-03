@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="bubbles.css">
     <script src="../../libraries/p5.min.js"></script>
     <script src="../../libraries/p5.sound.min.js"></script>
-    <script src="global.js"></script>
+    <script src="../../Global.js"></script>
   </head>
   
   <body>
@@ -42,20 +42,26 @@
       <div id="bubble-container">
         <img id="selected-wand-image" class="selected-wand-image" src="" alt="Selected bubble wand">
         
-        
         <div class="game-buttons">
-          <div class="score-box">
-            <span>Total bubbles</span>
-            <strong id="score">0</strong>
+
+           <div class="score-box">
+              <strong id="score">0</strong>
+              <span>/ 4</span>
           </div>
+
+          <div class="bubble-tally">
+            <span class="tally-bubble"></span>
+            <span class="tally-bubble"></span>
+            <span class="tally-bubble"></span>
+            <span class="tally-bubble"></span>
+           </div>
+
         </div>
       </div>
 
-      <p id="message">Hold the wand to blow a bubble!</p>
-
-<button id="try-again-button" onclick="resetGame()" style="display: none;">TRY AGAIN</button>
-
-<button id="next-button" style="display: none;"> NEXT</button>
+      <p id="message"> Trace the circle to blow a bubble!</p>
+      <button id="try-again-button" onclick="resetGame()">TRY AGAIN</button>
+      <button id="next-button">NEXT</button>
 
     </section>
     </main>

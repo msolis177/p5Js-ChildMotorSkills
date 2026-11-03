@@ -159,30 +159,6 @@ h1 {
   position: relative;
   z-index: 1;
 }
-.game-buttons {
-  width: 150px;
-  height: 150px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  background: white;
-  border: 3px solid black;
-  border-radius: 20px;
-}
-.score-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-  color: black;
-}
-#score {
-  font-size: 2.5rem;
-}
 
 #try-again-button {
   display: none;
@@ -214,4 +190,70 @@ h1 {
   align-items: center;
   gap: 20px;
   margin-top: 15px;
+}
+
+.game-buttons {
+  width: 150px;
+  min-height: 160px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  background: rgba(255,255,255,0.95);
+  /* border: 4px solid white; */
+  border-radius: 30px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+.score-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #654d80;
+  gap: 5px;
+}
+
+#score {
+  font-size: 46px;
+  font-weight: 900;
+  /* border: 2px solid #cccccc; */
+}
+
+.score-box span {
+  font-size: 25px;
+  font-weight: bold;
+  color: #aaa;
+  /* border: 2px solid #cccccc; */
+}
+
+.bubble-tally {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  /* border: 2px solid #cccccc;*/
+} 
+
+.tally-bubble {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #eeeeee;
+  border: 2px solid #cccccc;
+  transition: all 0.3s ease;
+}
+
+.tally-bubble.filled {
+  background: radial-gradient(
+    circle at 30% 25%,
+    white,
+    #a5eaff 35%,
+    #54c5ed 100%
+  );
+  border: 2px solid #48b9df;
+  transform: scale(1.15);
+  box-shadow: 0 3px 8px rgba(66,185,223,0.4);
 }
