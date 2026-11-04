@@ -1,55 +1,293 @@
 let hankFinishBackground;
 let hankFinishConfetti;
-let hankFinishFlags;
+let hankPartyElephant;
+let hankPartyBalloon;
+let hankPartyBubbleFriend;
+
+const hankPartyButtons = {
+  playAgain: { x: 260, y: 520, width: 200, height: 60 },
+  home: { x: 500, y: 520, width: 200, height: 60 }
+};
+
 function preload() {
   hankFinishBackground = loadImage(
     "assets/images/finish-background.png"
   );
-  hankFinishFlags = loadImage("assets/images/finish-flags.gif");
   hankFinishConfetti = loadImage(
-  "assets/images/finish-confetti.gif"
-);
+    "assets/images/finish-confetti.gif"
+  );
+  hankPartyElephant = loadImage(
+    "assets/images/elephant-cartoon.png"
+  );
+  hankPartyBalloon = loadImage(
+    "assets/images/red-balloon.gif"
+  );
+  hankPartyBubbleFriend = loadImage(
+    "assets/images/AnimalBlueBubbleWand.png"
+  );
 }
+
 function drawHankFinishScreen() {
+  push();
+
   image(hankFinishBackground, 0, 0, width, height);
 
+  // Celebration stays behind the characters.
+  image(hankFinishConfetti, 250, 145, 460, 260);
+
+  drawHankBirthdayBanner();
+  drawHankPartyElephant();
+  drawHankPartyDragon();
+
+  // Bubble friend stands beside the table.
+  image(hankPartyBubbleFriend, 625, 235, 150, 195);
+  drawHankPartyBubbles();
+
+  // Table goes in front of Dragon.
+  drawHankPartyTable();
+
+  drawHudButton(
+    hankPartyButtons.playAgain,
+    "Play again",
+    "#C95843"
+  );
+
+  drawHudButton(
+    hankPartyButtons.home,
+    "Home",
+    "#FFE6A3"
+  );
+
+  pop();
+}
+
+function drawHankBirthdayBanner() {
+  push();
+
+  stroke("#B74D51");
+  strokeWeight(2);
+
+  // Ribbon tails.
+  fill("#D9686A");
+  beginShape();
+  vertex(210, 64);
+  vertex(170, 61);
+  vertex(184, 88);
+  vertex(170, 114);
+  vertex(220, 119);
+  endShape(CLOSE);
+
+  beginShape();
+  vertex(750, 64);
+  vertex(790, 61);
+  vertex(776, 88);
+  vertex(790, 114);
+  vertex(740, 119);
+  endShape(CLOSE);
+
+  // Gently curved main ribbon.
+  fill("#FFE6A3");
+  beginShape();
+  vertex(210, 48);
+  bezierVertex(370, 67, 590, 67, 750, 48);
+  vertex(750, 115);
+  bezierVertex(590, 139, 370, 139, 210, 115);
+  endShape(CLOSE);
+
+  noStroke();
   fill("#59433A");
   textAlign(CENTER, CENTER);
-  textSize(48);
+  textStyle(BOLD);
+  textSize(32);
+  text("Happy Birthday, Dragon!", 480, 96);
 
-  text("THE END", 480, 160);
-image(hankFinishFlags, 320, 190, 320, 320);
-image(hankFinishConfetti, 280, 210, 400, 225);
-drawHudButton(
-  { x: 260, y: 470, width: 200, height: 60 },
-  "Play again",
-  "#C95843"
-);drawHudButton(
-  { x: 500, y: 470, width: 200, height: 60 },
-  "Home",
-  "#FFE6A3"
-);
+  pop();
 }
-function hankFinishMousePressed() {
-    const playAgainButton = {
-    x: 260,
-    y: 470,
-    width: 200,
-    height: 60
-  };
 
-  if (isInsideHudButton(mouseX, mouseY, playAgainButton)) {
+function drawHankPartyElephant() {
+  push();
+
+  const balloons = [
+    { x: 175, y: 176 },
+    { x: 230, y: 147 },
+    { x: 285, y: 176 }
+  ];
+
+  for (const balloon of balloons) {
+    stroke("#7B584B");
+    strokeWeight(2);
+
+    line(226, 294, balloon.x + 50, balloon.y + 66);
+
+    image(
+      hankPartyBalloon,
+      balloon.x, balloon.y,
+      70, 70,
+      0, 0, 420, 420
+    );
+  }
+
+  image(hankPartyElephant, 210, 260, 160, 172);
+  pop();
+}
+
+function drawHankPartyDragon() {
+  push();
+
+  // Preserve the feeding game's design at a smaller party size.
+  translate(480, 300);
+  scale(0.85);
+  translate(-730, -320);
+
+  stroke("#8C5534");
+  strokeWeight(3);
+  fill("#F49B55");
+  ellipse(712, 315, 152, 132);
+  ellipse(746, 370, 116, 77);
+
+  fill("#FFE89B");
+  triangle(650, 274, 660, 232, 685, 262);
+  triangle(714, 250, 733, 218, 742, 261);
+  ellipse(748, 372, 63, 58);
+
+  fill("#FFFDF7");
+  circle(682, 301, 32);
+  circle(730, 301, 32);
+
+  noStroke();
+  fill("#513B33");
+  circle(689, 300, 12);
+  circle(737, 300, 12);
+
+  fill("#6D3940");
+  ellipse(690, 334, 48, 31);
+
+  fill("#F6C7B7");
+  arc(690, 339, 22, 12, 0, PI);
+
+  fill("#F49B55");
+  stroke("#8C5534");
+  strokeWeight(3);
+  triangle(793, 355, 830, 330, 812, 378);
+
+  pop();
+}
+
+function drawHankPartyTable() {
+  push();
+
+  // Small table, with space below before the buttons.
+  noStroke();
+  fill("#B67D56");
+  rect(390, 408, 14, 55, 5);
+  rect(556, 408, 14, 55, 5);
+
+  stroke("#C08577");
+  strokeWeight(2);
+  fill("#F6B7AA");
+  rect(360, 383, 240, 39, 12);
+
+  fill("#FFE5CF");
+  ellipse(480, 383, 240, 39);
+
+  // Cake plate.
+  noStroke();
+  fill("#DCE3E5");
+  ellipse(480, 382, 128, 22);
+  fill("#FFFFFF");
+  ellipse(480, 379, 112, 15);
+
+  // Cake with a missing portion on the right.
+  stroke("#D6A45C");
+  strokeWeight(1);
+  fill("#F6C56E");
+
+  beginShape();
+  vertex(438, 341);
+  vertex(503, 341);
+  vertex(503, 354);
+  vertex(518, 354);
+  vertex(518, 376);
+  vertex(438, 376);
+  endShape(CLOSE);
+
+  // Cream layer follows the remaining cake.
+  noStroke();
+  fill("#FFF0D7");
+  rect(439, 361, 78, 5);
+
+  // Pink frosting.
+  fill("#F47A8A");
+  rect(438, 338, 65, 13, 5);
+
+  fill("#FFFDF7");
+  circle(450, 344, 4);
+  circle(468, 344, 4);
+  circle(486, 344, 4);
+
+  // A little cake left on the plate.
+  fill("#F6C56E");
+  ellipse(528, 382, 7, 4);
+  ellipse(536, 379, 5, 3);
+
+  pop();
+}
+
+function drawHankPartyBubbles() {
+  push();
+
+  const bubbles = [
+    { x: 728, y: 207, size: 33 },
+    { x: 769, y: 165, size: 24 },
+    { x: 682, y: 170, size: 19 }
+  ];
+
+  for (const bubble of bubbles) {
+    stroke("#75BED6");
+    strokeWeight(2);
+    fill(210, 245, 255, 90);
+    circle(bubble.x, bubble.y, bubble.size);
+
+    noStroke();
+    fill(255, 255, 255, 210);
+    circle(
+      bubble.x - bubble.size * 0.2,
+      bubble.y - bubble.size * 0.2,
+      bubble.size * 0.18
+    );
+  }
+
+  pop();
+}
+
+function hankFinishMousePressed() {
+  if (
+    isInsideHudButton(
+      mouseX,
+      mouseY,
+      hankPartyButtons.playAgain
+    )
+  ) {
+    // Clear only this app's four completion flags.
+    ["balloons", "pouring", "feedMe", "bubbles"].forEach(
+      function (game) {
+        localStorage.removeItem(
+          "tinyTots." + game + "Complete"
+        );
+      }
+    );
+
     window.location.href = "accessmenu.html";
     return;
   }
-  const homeButton = {
-    x: 500,
-    y: 470,
-    width: 200,
-    height: 60,
-  };
 
-  if (isInsideHudButton(mouseX, mouseY, homeButton)) {
+  if (
+    isInsideHudButton(
+      mouseX,
+      mouseY,
+      hankPartyButtons.home
+    )
+  ) {
     window.location.href = "index.html";
   }
 }
