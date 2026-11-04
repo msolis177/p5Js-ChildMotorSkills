@@ -11,19 +11,19 @@ const hankPartyButtons = {
 
 function preload() {
   hankFinishBackground = loadImage(
-    "assets/images/finish-background.png"
+    "./assets/images/finish-background.png"
   );
   hankFinishConfetti = loadImage(
-    "assets/images/finish-confetti.gif"
+    "./assets/images/finish-confetti.gif"
   );
   hankPartyElephant = loadImage(
-    "assets/images/elephant-cartoon.png"
+    "./assets/images/elephant-cartoon.png"
   );
   hankPartyBalloon = loadImage(
-    "assets/images/red-balloon.gif"
+    "./assets/images/red-balloon.gif"
   );
   hankPartyBubbleFriend = loadImage(
-    "assets/images/AnimalBlueBubbleWand.png"
+    "./assets/images/AnimalBlueBubbleWand.png"
   );
 }
 
