@@ -420,6 +420,8 @@ function finishGame() {
 
   gameState = "finished";
 
+ 
+
   if (score >= 10) {
     gameState = "celebrating";
     celebrationStart = millis();
@@ -435,6 +437,12 @@ function finishGame() {
 
   document.getElementById("startBtn").hidden = true;
   document.getElementById("doneBtn").hidden = false;
+   
+  if (score >= TARGET_SCORE) {
+    localStorage.setItem("tinyTots.pouringComplete", "true");
+    document.getElementById("dontBtn").style.display = "block";
+    return;
+  }
 
   updateStars();
 }
