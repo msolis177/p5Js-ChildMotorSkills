@@ -1,21 +1,69 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="pouring.css">
-    <script src="global.js"></script>
-    <script src="../../Global.js"></script>
     <title>Document</title>
 </head>
+
 <body>
-    <div class="canvas-container">
-        
+  <audio id="pouringSound" src="./assets/pouring_water.mp3"></audio>
+  <main class="game-wrapper">
 
+    <!-- Top section -->
+    <div class="top-bar">
+      <button id="homeBtn">Home</button>
+
+    <div class="timer-display">
+     <h1 id="timer">1:00</h1>
     </div>
-     <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script> 
 
-    <script src="pouring.js"></script>
+      <div id="progress">0 / 10</div>
+    </div>
+
+    <!-- Instructions -->
+    <h2 class="game-title">POURING GAME</h2>
+
+    <p class="instructions">
+      Match the pitcher color to the correct glass!
+      Hold for 3 seconds to pour.
+    </p>
+
+    <!-- p5.js game appears here -->
+    <div id="game-container"></div>
+
+    <!-- Feedback -->
+    <div id="message">
+      Press Start to begin!
+    </div>
+
+    <!-- Star rewards -->
+    <div class="rewards">
+      <div class="reward bronze">
+        <span>★</span>
+        <p>3 Bronze</p>
+      </div>
+
+      <div class="reward silver">
+        <span>★</span>
+        <p>6 Silver</p>
+      </div>
+
+      <div class="reward gold">
+        <span>★</span>
+        <p>10 Gold</p>
+      </div>
+    </div>
+
+    <!-- Bottom buttons -->
+    <div class="bottom-bar">
+      <button id="startBtn">Start</button>
+      <button id="restartBtn">Restart</button>
+      <button id="doneBtn" hidden>Done</button>
+    </div>
+
+  </main>
 </body>
 </html>
