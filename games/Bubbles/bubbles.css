@@ -50,21 +50,7 @@ cursor: pointer;
   /* outline: none; */
   border-radius: 5px;
 }
-#sound-button{
-  height: 40px;
-  width: 150px;
-  cursor: pointer;
-  font-size: 3vh;
-  font-weight: 500;
-  background-color: rgb(250, 225, 117);
-  box-shadow: beige;
-  border: none;
-  /* outline: none; */
-  border-radius: 5px;
-}
-#sound-button:hover, #home-button:hover{
-  background-color: #f8de97;
-}
+
 .game-header {
   display: flex;
   justify-content: center;
@@ -110,6 +96,7 @@ h1 {
   object-fit: contain;
   border-radius: 14px;
 } 
+
 .wand-card {
   min-width: 0;
   min-height: 225px;
