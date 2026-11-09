@@ -118,7 +118,7 @@ body {
 .rewards {
   position: absolute;
   top: 245px;
-  left: calc(45% - 350px + 15px);
+  left: calc(47% - 350px + 15px);
 
   display: flex;
   flex-direction: row;
@@ -247,7 +247,7 @@ button[hidden] {
     width: 150px;
     height: auto;
     bottom: 250px;
-    right: 100px;
+    right: 300px;
     z-index: 5;
     cursor: pointer;
     pointer-events: auto;
