@@ -330,7 +330,7 @@ function drawDragonCompleteScreen() {
   text("You delivered 3 cake bites without spilling.", 480, 304);
   textStyle(NORMAL);
 
-  drawHudButton(dragonCenterButton, "PLAY AGAIN", "#74C365");
+  drawHudButton(dragonCenterButton, "NEXT", "#74C365");
 }
 
 function feedDragonResultMousePressed() {
@@ -344,7 +344,7 @@ function feedDragonResultMousePressed() {
   }
 
   if (dragonResult === "complete") {
-    resetFeedTheDragon();
+    window.location.href = "accessmenu.html";
   } else {
     startNextDragonRound();
   }
@@ -423,6 +423,7 @@ function feedDragonMouseReleased() {
     if (dragonFeedsCompleted >= dragonFeedsNeeded) {
       dragonResult = "complete";
       dragonMessage = "Great job! The dragon is full!";
+      localStorage.setItem("tinyTots.feedMeComplete", "true");
     } else {
       dragonResult = "fed";
       dragonRoundFinishedAt = millis();
