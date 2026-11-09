@@ -9,14 +9,17 @@
   <title>Color Pouring Game</title>
 
   <link rel="stylesheet" href="pouring.css">
-
-  <script src="../../libraries/p5.min.js"></script>
+    <script src="../../Global.js"></script>
+    <script src="../../libraries/p5.min.js"></script>
+    <script src="../../libraries/p5.sound.min.js"></script>
   <script src="pouring.js" defer></script>
 </head>
 
 <body>
   <audio id="pouringSound" src="./assets/pouring_water.mp3"></audio>
+  <audio id="buttonSound" src="confirmation_002.wav"></audio> 
   <main class="game-wrapper">
+    <img src="../../assets/images/party_corgi.png" alt="Party Corgi" class="corgi">
 
     <!-- Top section -->
     <div class="top-bar">
