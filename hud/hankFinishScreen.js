@@ -17,13 +17,16 @@ function preload() {
     "./assets/images/finish-confetti.gif"
   );
   hankPartyElephant = loadImage(
-    "./assets/images/elephant-cartoon.png"
+    "./assets/images/elephantFlipped.png"
   );
   hankPartyBalloon = loadImage(
     "./assets/images/red-balloon.gif"
   );
   hankPartyBubbleFriend = loadImage(
-    "./assets/images/AnimalBlueBubbleWand.png"
+    "./assets/images/greenguy.png"
+  );
+  hankPartyPouringFriend = loadImage(
+    "./assets/images/party_corgi.png"
   );
 }
 
@@ -38,9 +41,8 @@ function drawHankFinishScreen() {
   drawHankBirthdayBanner();
   drawHankPartyElephant();
   drawHankPartyDragon();
-
+  drawHankPartyPouringFriend();
   // Bubble friend stands beside the table.
-  image(hankPartyBubbleFriend, 625, 235, 150, 195);
   drawHankPartyBubbles();
 
   // Table goes in front of Dragon.
@@ -108,16 +110,16 @@ function drawHankPartyElephant() {
   push();
 
   const balloons = [
-    { x: 175, y: 176 },
-    { x: 230, y: 147 },
-    { x: 285, y: 176 }
+    { x: 195, y: 176 },
+    { x: 250, y: 147 },
+    { x: 310, y: 176 }
   ];
 
   for (const balloon of balloons) {
     stroke("#7B584B");
     strokeWeight(2);
 
-    line(226, 294, balloon.x + 50, balloon.y + 66);
+    line(360, 304, balloon.x + 50, balloon.y + 66);
 
     image(
       hankPartyBalloon,
@@ -127,7 +129,7 @@ function drawHankPartyElephant() {
     );
   }
 
-  image(hankPartyElephant, 210, 260, 160, 172);
+  image(hankPartyElephant, 210, 260, 170, 172);
   pop();
 }
 
@@ -135,8 +137,8 @@ function drawHankPartyDragon() {
   push();
 
   // Preserve the feeding game's design at a smaller party size.
-  translate(480, 300);
-  scale(0.85);
+  translate(450, 300);
+  scale(0.73);
   translate(-730, -320);
 
   stroke("#8C5534");
@@ -169,6 +171,13 @@ function drawHankPartyDragon() {
   stroke("#8C5534");
   strokeWeight(3);
   triangle(793, 355, 830, 330, 812, 378);
+
+  pop();
+}
+
+function drawHankPartyPouringFriend() {
+  push();
+ image(hankPartyPouringFriend, 520, 265, 145, 145);
 
   pop();
 }
@@ -235,27 +244,7 @@ function drawHankPartyTable() {
 
 function drawHankPartyBubbles() {
   push();
-
-  const bubbles = [
-    { x: 728, y: 207, size: 33 },
-    { x: 769, y: 165, size: 24 },
-    { x: 682, y: 170, size: 19 }
-  ];
-
-  for (const bubble of bubbles) {
-    stroke("#75BED6");
-    strokeWeight(2);
-    fill(210, 245, 255, 90);
-    circle(bubble.x, bubble.y, bubble.size);
-
-    noStroke();
-    fill(255, 255, 255, 210);
-    circle(
-      bubble.x - bubble.size * 0.2,
-      bubble.y - bubble.size * 0.2,
-      bubble.size * 0.18
-    );
-  }
+  image(hankPartyBubbleFriend, 610, 285, 145, 165);
 
   pop();
 }
