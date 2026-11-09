@@ -41,11 +41,11 @@ let celebrationStart = 0;
 
 const cupPositions = [
   { x: 130, y: 245 },
-  { x: 570, y: 245 }
+  { x: 540, y: 245 }
 ];
 
 function setup() {
-  const canvas = createCanvas(700, 380);
+  const canvas = createCanvas(800, 380);
   canvas.parent("game-container");
 
   textFont("Arial");
@@ -345,6 +345,7 @@ function handlePouring() {
     updateStars();
 
     if (score >= TARGET_SCORE) {
+      celebrateCorgi();
       finishGame();
     } else {
       newRound();
@@ -521,10 +522,39 @@ function goHome() {
   window.location.href = "../../accessmenu.html";
 }
 function playButtonSound() {
-  buttonSound.currentTime = 0;
-  buttonSound.play().catch(error => console.error("Button sound:", error));
-}
+    buttonSound.currentTime = 0;
 
-["startBtn", "restartBtn", "homeBtn", "doneBtn"].forEach(id => {
-  document.getElementById(id)?.addEventListener("click", playButtonSound);
+    buttonSound.play().catch(error => {
+        console.error("Button sound error:", error);
+    });
+}
+document.addEventListener("DOMContentLoaded", function() {
+    ["startBtn", "restartBtn", "homeBtn", "doneBtn"].forEach(id => {
+        const btn = document.getElementById(id);
+
+        if (btn) {
+            btn.addEventListener("click", playButtonSound);
+        }
+    });
+});
+
+function celebrateCorgi() {
+    const corgi = document.querySelector(".corgi");
+
+    if (corgi) {
+        corgi.classList.remove("celebrate");
+        void corgi.offsetWidth;
+        corgi.classList.add("celebrate");
+    }
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const corgi = document.querySelector(".corgi");
+
+    if (corgi) {
+        corgi.addEventListener("click", function() {
+            if (score >= TARGET_SCORE) {
+                celebrateCorgi();
+            }
+        });
+    }
 });
