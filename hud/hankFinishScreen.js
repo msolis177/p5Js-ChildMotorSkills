@@ -266,7 +266,7 @@ function hankFinishMousePressed() {
       }
     );
 
-    window.location.href = "accessmenu.html";
+    window.location.href = "index.html";
     return;
   }
 
@@ -277,6 +277,6 @@ function hankFinishMousePressed() {
       hankPartyButtons.home
     )
   ) {
-    window.location.href = "index.html";
+    window.location.href = "accessmenu.html";
   }
 }
