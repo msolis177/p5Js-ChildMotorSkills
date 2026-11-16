@@ -48,21 +48,13 @@ function setup() {
   const requestedGame = new URLSearchParams(window.location.search).get("game");
   if (requestedGame === "dragon") {
     hudCurrentGame = 2;
-    hankFinishVisible = false;
     resetFeedTheDragon();
   }
 }
 
-let hankFinishVisible = true;
-
 function draw() {
-  if (hankFinishVisible) {
-    drawHankFinishScreen();
-    return;
-  }
-  background("#FFF5D9");
+  clear();
 
-  drawToyDecorations();
   drawHudHeader();
   drawGamePlaceholder();
   drawHudFooter();
@@ -71,25 +63,14 @@ function draw() {
 
 function drawHudHeader() {
   drawHudButton(hudButtons.home, "HOME", "#FFD45A");
-  drawHudButton(
-    hudButtons.sound,
-    hudSoundOn ? "SOUND ON" : "SOUND OFF",
-    "#FFD45A"
-  );
 
   noStroke();
-  fill("#7B584B");
+  fill("#59433A");
   textAlign(CENTER, CENTER);
-  textSize(15);
   textStyle(BOLD);
-  text("TINY TOTS PLAYROOM", HUD_WIDTH / 2, 27);
-
-  fill(hudGames[hudCurrentGame].color);
   textSize(34);
-  text(hudGames[hudCurrentGame].title, HUD_WIDTH / 2, 65);
+  text(hudGames[hudCurrentGame].title.toUpperCase(), HUD_WIDTH / 2, 65);
   textStyle(NORMAL);
-
-  drawRubberDuck(920, 24, 0.55);
 }
 
 function drawGamePlaceholder() {
@@ -133,11 +114,11 @@ function drawGamePlaceholder() {
 }
 
 function drawHudFooter() {
-  // Feed the Dragon uses one centered result button so the activity stays simple.
-  if (hudCurrentGame !== 2) {
-    drawHudButton(hudButtons.tryAgain, "TRY AGAIN", "#F47A5A");
-    drawHudButton(hudButtons.next, "NEXT", "#F47A5A");
-  }
+  // Feed the Dragon already has its own 0 / 3 progress bar.
+  if (hudCurrentGame === 2) return;
+
+  drawHudButton(hudButtons.tryAgain, "TRY AGAIN", "#F47A5A");
+  drawHudButton(hudButtons.next, "NEXT", "#F47A5A");
 
   const firstDotX = 426;
   const dotGap = 36;
@@ -178,16 +159,9 @@ function drawHudButton(button, label, buttonColor) {
 }
 
 function mousePressed() {
-  if (hankFinishVisible) {
-    hankFinishMousePressed();
-    return;
-  }
   if (isInsideHudButton(mouseX, mouseY, hudButtons.home)) {
     window.location.href = "accessmenu.html";
     return;
-  } else if (isInsideHudButton(mouseX, mouseY, hudButtons.sound)) {
-    hudSoundOn = !hudSoundOn;
-    hudMessage = hudSoundOn ? "Sound is on." : "Sound is off.";
   } else if (hudCurrentGame === 2 && feedDragonResultMousePressed()) {
     return;
   } else if (
@@ -227,7 +201,6 @@ function isInsideHudButton(x, y, button) {
 function updateHudCursor() {
   const overButton =
     isInsideHudButton(mouseX, mouseY, hudButtons.home) ||
-    isInsideHudButton(mouseX, mouseY, hudButtons.sound) ||
     (hudCurrentGame !== 2 &&
       (isInsideHudButton(mouseX, mouseY, hudButtons.tryAgain) ||
         isInsideHudButton(mouseX, mouseY, hudButtons.next))) ||

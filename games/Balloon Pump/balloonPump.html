@@ -22,6 +22,25 @@
       height: 100% !important;
       border: none;
     }
+    .home-button {
+      position: absolute;
+      z-index: 2;
+      top: 38px;
+      left: 34px;
+      width: 126px;
+      height: 52px;
+      padding: 0;
+      border: 3px solid #7b584b;
+      border-radius: 18px;
+      background: #ffd45a;
+      color: #513b33;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .home-button:hover {
+      background: #fff08a;
+    }
   .progress-bar {
   position: absolute;
   z-index: 1;
@@ -40,6 +59,7 @@
 </head>
 <body>
   <main class="playroom-frame" id="balloon-frame">
+  <button class="home-button" onclick="window.location.href='../../accessmenu.html';">HOME</button>
   <div class="progress-bar"></div>
 </main>
 

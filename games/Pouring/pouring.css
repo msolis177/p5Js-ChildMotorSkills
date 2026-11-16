@@ -14,20 +14,22 @@ body {
 
 
 .game-wrapper {
-    width: 90%;
-    max-width: 900px;
-    min-height: 500px;
-    margin: 50px auto;
+    position: relative;
+    width: min(100%, 970px);
+    aspect-ratio: 960 / 640;
+    margin: 24px auto;
 
     border: 5px solid #8b6555;
     border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(89, 67, 58, 0.2);
 
     background-image: url("../../assets/images/finish-background.png");
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
 
-    padding: 25px;
+    padding: 24px;
     box-sizing: border-box;
 }
 
@@ -40,15 +42,25 @@ body {
 }
 
 #homeBtn {
-  justify-self: start;
+  position: absolute;
+  z-index: 12;
+  top: 24px;
+  left: 24px;
+  width: 126px;
+  height: 52px;
+  padding: 0;
+  border: 3px solid #7b584b;
+  border-radius: 18px;
+  background: #ffd45a;
+  color: #513b33;
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .timer-display {
-  position: absolute;
-  top: 250px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  position: static;
+  grid-column: 2;
   text-align: center;
 }
 
@@ -59,12 +71,11 @@ body {
 }
 
 #progress {
-  position: absolute;
-  top: 250px;
-  right: calc(50% - 350px + 20px);
+  position: static;
+  grid-column: 3;
+  justify-self: end;
   font-size: 25px;
   font-weight: bold;
-  z-index: 10;
   
 }
 
@@ -72,13 +83,13 @@ body {
 
 .game-title {
   font-size: 25px;
-  margin: 20px 0 10px;
+  margin: 4px 0;
   text-align: center;
 }
 
 .instructions {
   font-size: 19px;
-  margin: 10px 0 20px;
+  margin: 4px 0 8px;
   text-align: center;
 }
 
@@ -89,7 +100,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px auto;
+  margin: 4px auto;
 }
 
 #game-container canvas {
@@ -108,7 +119,7 @@ body {
   min-height: 32px;
   font-size: 23px;
   font-weight: bold;
-  margin: 15px 0;
+  margin: 7px 0;
   color: #333;
   text-align: center;
 }
@@ -117,8 +128,8 @@ body {
 
 .rewards {
   position: absolute;
-  top: 245px;
-  left: calc(47% - 350px + 15px);
+  top: 178px;
+  left: 78px;
 
   display: flex;
   flex-direction: row;
@@ -185,7 +196,7 @@ button:hover {
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin: 20px 0;
+  margin: 7px 0;
 }
 
 #doneBtn {
@@ -246,8 +257,8 @@ button[hidden] {
     position: absolute;
     width: 150px;
     height: auto;
-    bottom: 250px;
-    right: 300px;
+    bottom: 205px;
+    right: 72px;
     z-index: 5;
     cursor: pointer;
     pointer-events: auto;

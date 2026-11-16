@@ -20,7 +20,7 @@ body {
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 10px 24px rgba(89, 67, 58, 0.2);
-  background-image: url("../../assets/images/Screenshot 2026-10-19 at 11.11.27 AM.png");
+  background-image: url("../../assets/images/finish-background.png");
   background-size: 100% 100%;
   background-position: center;
   display: flex;
@@ -32,23 +32,29 @@ body {
 }
 
 .outside-button{
-width: 90%;
-/* border: 10px solid red; */
-cursor: pointer;
-
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
 }
 #home-button{
-  height: 40px;
-  width: 150px;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 126px;
+  height: 52px;
+  padding: 0;
+  border: 3px solid #7b584b;
+  border-radius: 18px;
+  background: #ffd45a;
+  color: #513b33;
   cursor: pointer;
-  font-size: 3vh;
-  font-weight: 500;
-  background-color: rgb(250, 225, 117);
-  box-shadow: beige;
-  margin-right: 62vh;
-  border: none;
-  /* outline: none; */
-  border-radius: 5px;
+  font-size: 17px;
+  font-weight: bold;
+  pointer-events: auto;
+}
+#home-button:hover{
+  background: #fff08a;
 }
 
 .game-header {
