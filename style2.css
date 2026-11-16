@@ -52,12 +52,18 @@ h1 {
   position: absolute;
   top: 24px;
   left: 24px;
-  padding: 10px 20px;
-  border: 2px solid #7b584b;
-  border-radius: 12px;
-  background: #ffe6a3;
-  color: #59433a;
+  box-sizing: border-box;
+  width: 126px;
+  height: 52px;
+  padding: 0;
+  border: 3px solid #7b584b;
+  border-radius: 18px;
+  background: #ffd45a;
+  color: #513b33;
   font: inherit;
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -83,7 +89,7 @@ h1 {
 
 .game-card:hover,
 .back-button:hover {
-  background: #fff0c7;
+  background: #fff08a;
 }
 
 .game-picture {

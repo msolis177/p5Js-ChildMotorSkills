@@ -13,6 +13,12 @@ function completeGame(gameName) {
   window.tinyTotsMusic = music;
   music.loop = true;
   music.volume = 0.15;
+  function syncMusicMute() {
+  music.muted = localStorage.getItem("tinyTots.soundMuted") === "true";
+}
+
+syncMusicMute();
+window.addEventListener("pageshow", syncMusicMute);
   music.preload = "auto";
   let pending = false;
   let position = 0;
@@ -40,3 +46,54 @@ function completeGame(gameName) {
   });
   startMusic();
 })();
+document.addEventListener("DOMContentLoaded", () => {
+  const frame = document.querySelector("#hud-preview, .playroom-frame, .game-wrapper")
+    || document.querySelector("main");
+  const music = window.tinyTotsMusic;
+  if (!frame || !music) return;
+
+  if (getComputedStyle(frame).position === "static") {
+    frame.style.position = "relative";
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.style.cssText = `
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 20;
+    box-sizing: border-box;
+    width: 126px;
+    height: 52px;
+    min-height: 52px;
+    padding: 0;
+    border: 3px solid #7b584b;
+    border-radius: 18px;
+    background: #ffd45a;
+    color: #513b33;
+    font-size: 20px;
+    cursor: pointer;
+  `;
+
+  function updateSpeaker() {
+    music.muted = localStorage.getItem("tinyTots.soundMuted") === "true";
+    const label = music.muted ? "Unmute music" : "Mute music";
+    button.textContent = music.muted ? "🔇" : "🔊";
+    button.setAttribute("aria-label", label);
+    button.title = label;
+  }
+
+  button.addEventListener("click", () => {
+    localStorage.setItem("tinyTots.soundMuted", String(!music.muted));
+    updateSpeaker();
+
+    if (!music.muted && music.paused) {
+      music.play().catch(console.warn);
+    }
+  });
+
+  frame.appendChild(button);
+  window.addEventListener("pageshow", updateSpeaker);
+  updateSpeaker();
+});

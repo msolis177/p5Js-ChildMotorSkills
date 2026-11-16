@@ -4,6 +4,7 @@ let holdingPump = false;
 let lastPumpTime = Date.now();
 let popUntil = 0;
 
+
 let elephantPicture;
 let pumpPicture;
 let balloonPicture;
@@ -62,6 +63,7 @@ function draw() {
       holdingPump = false;
       balloonPressure = 0;
       popUntil = now + 900;
+      playBalloonEffect(balloonPopSound);
     }
   }
 
@@ -336,6 +338,7 @@ function mouseReleased() {
       x: 470 - size * 0.71,
       y: 350 - (size * 496 / 420) * 0.83
     });
+    playBalloonEffect(balloonSuccessSound);
     if (floatingBalloons.length === 3) {
   localStorage.setItem("tinyTots.balloonsComplete", "true");
 }
@@ -348,4 +351,14 @@ function mouseReleased() {
 function cancelPump() {
   holdingPump = false;
   balloonPressure = 0;
+}
+const balloonPopSound = new Audio("../../assets/sounds/pop.wav");
+const balloonSuccessSound = new Audio("../../assets/sounds/SuccessSound.mp3");
+
+function playBalloonEffect(sound) {
+  if (window.tinyTotsMusic?.muted) return;
+
+  sound.volume = 0.35;
+  sound.currentTime = 0;
+  sound.play().catch(console.warn);
 }

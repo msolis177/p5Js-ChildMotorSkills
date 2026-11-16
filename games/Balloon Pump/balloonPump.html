@@ -25,10 +25,11 @@
     .home-button {
       position: absolute;
       z-index: 2;
-      top: 38px;
-      left: 34px;
+      top: 24px;
+      left: 24px;
       width: 126px;
       height: 52px;
+      min-height: 52px;
       padding: 0;
       border: 3px solid #7b584b;
       border-radius: 18px;
@@ -37,6 +38,7 @@
       font-size: 17px;
       font-weight: bold;
       cursor: pointer;
+      
     }
     .home-button:hover {
       background: #fff08a;
@@ -60,6 +62,10 @@
 <body>
   <main class="playroom-frame" id="balloon-frame">
   <button class="home-button" onclick="window.location.href='../../accessmenu.html';">HOME</button>
+  <button class="home-button" id="sound-toggle" type="button"
+        style="left: auto; right: 24px;" aria-label="Mute music">
+  <span aria-hidden="true">🔊</span>
+</button>
   <div class="progress-bar"></div>
 </main>
 
