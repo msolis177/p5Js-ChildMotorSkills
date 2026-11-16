@@ -79,6 +79,7 @@ function draw() {
     textSize(30);
     let fingerX = bubbleX + 30;
     let fingerY = bubbleY - bubbleSize / 2 + 50 + fingerBounce;
+    fill("rgb(31, 191, 240)");
     text("POP!", fingerX, fingerY);
   }
 }
