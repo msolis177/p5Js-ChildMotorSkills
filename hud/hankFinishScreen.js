@@ -266,7 +266,7 @@ function hankFinishMousePressed() {
       }
     );
 
-    window.location.href = "index.html";
+    window.location.href = "../index.html";
     return;
   }
 
