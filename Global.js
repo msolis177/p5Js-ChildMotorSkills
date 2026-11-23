@@ -97,3 +97,63 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("pageshow", updateSpeaker);
   updateSpeaker();
 });
+
+// Route finger input through the same actions as the laptop mouse.
+(() => {
+  let canvas = null;
+  let fingerId = null;
+
+  function updatePosition(touch) {
+    const bounds = canvas.getBoundingClientRect();
+    window.pmouseX = window.mouseX;
+    window.pmouseY = window.mouseY;
+    window.mouseX = (touch.clientX - bounds.left) * window.width / bounds.width;
+    window.mouseY = (touch.clientY - bounds.top) * window.height / bounds.height;
+  }
+
+  function blockBrowserGesture(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+
+  document.addEventListener("touchstart", event => {
+    if (!(event.target instanceof HTMLCanvasElement)) return;
+    blockBrowserGesture(event);
+    if (canvas) return;
+    canvas = event.target;
+    const touch = event.changedTouches[0];
+    fingerId = touch.identifier;
+    updatePosition(touch);
+    window.mouseIsPressed = true;
+    window.mouseButton = window.LEFT;
+    if (typeof window.userStartAudio === "function") window.userStartAudio();
+    if (typeof window.mousePressed === "function") window.mousePressed();
+  }, { capture: true, passive: false });
+
+  document.addEventListener("touchmove", event => {
+    if (!canvas) return;
+    blockBrowserGesture(event);
+    const touch = Array.from(event.changedTouches).find(t => t.identifier === fingerId);
+    if (!touch) return;
+    updatePosition(touch);
+    if (typeof window.mouseDragged === "function") window.mouseDragged();
+  }, { capture: true, passive: false });
+
+  function finishTouch(event) {
+    if (!canvas) return;
+    blockBrowserGesture(event);
+    const touch = Array.from(event.changedTouches).find(t => t.identifier === fingerId);
+    if (!touch) return;
+    updatePosition(touch);
+    window.mouseIsPressed = false;
+    canvas = null;
+    fingerId = null;
+    if (event.type === "touchcancel" && typeof window.cancelPump === "function") {
+      window.cancelPump();
+    } else if (typeof window.mouseReleased === "function") {
+      window.mouseReleased();
+    }
+  }
+  document.addEventListener("touchend", finishTouch, { capture: true, passive: false });
+  document.addEventListener("touchcancel", finishTouch, { capture: true, passive: false });
+})();
