@@ -1,11 +1,11 @@
 
-const GAME_TIME = 60;
+const GAME_TIME = 30;
 const POUR_TIME = 3000;
 const pouringSound = new Audio("/assets/sounds/pouring_water.mp3");
 pouringSound.loop = true;
 const buttonSound = new Audio("./confirmation_002.wav");
 buttonSound.volume = 0.5;
-const TARGET_SCORE = 10;
+const TARGET_SCORE = 5;
 
 const COLORS = [
   { name: "Red", hex: "#e74c3c" },
@@ -343,6 +343,7 @@ function handlePouring() {
 
     score++;
     updateStars();
+    updateDisplay();
 
     if (score >= TARGET_SCORE) {
       celebrateCorgi();
@@ -420,17 +421,18 @@ function finishGame() {
   pourProgress = 0;
 
   gameState = "finished";
+  document.getElementById("restartBtn").hidden = true;
 
  
 
-  if (score >= 10) {
+  if (score >= 5) {
     gameState = "celebrating";
     celebrationStart = millis();
     createConfetti();
     setMessage("GOLD STAR! Amazing job!");
-  } else if (score >= 6) {
-    setMessage("SILVER STAR! Great job!");
   } else if (score >= 3) {
+    setMessage("SILVER STAR! Great job!");
+  } else if (score >= 1) {
     setMessage("BRONZE STAR! Good job!");
   } else {
     setMessage("Time's up! Keep practicing!");
@@ -455,17 +457,17 @@ function updateStars() {
 
   bronze.classList.toggle(
     "earned",
-    score >= 3 && score <= 5
+    score >= 1 && score <= 2
   );
 
   silver.classList.toggle(
     "earned",
-    score >= 6 && score <= 9
+    score >= 3 && score <= 4
   );
 
   gold.classList.toggle(
     "earned",
-    score >= 10
+    score >= 5
   );
 }
 
