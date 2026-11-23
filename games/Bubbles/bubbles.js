@@ -242,7 +242,9 @@ function mouseReleased() {
   stopTracing();
 }
 
-function touchStarted() {
+function touchStarted(event) {
+  // Let real buttons and links receive normal finger taps.
+  if (!(event.target instanceof HTMLCanvasElement)) return true;
    userStartAudio();
   if (gamePhase === "trace") {
     startTracing(mouseX, mouseY);
@@ -255,12 +257,16 @@ function touchStarted() {
   return false;
 }
 
-function touchMoved() {
+function touchMoved(event) {
+  // Let real buttons and links receive normal finger taps.
+  if (!(event.target instanceof HTMLCanvasElement)) return true;
   continueTracing(mouseX, mouseY);
   return false;
 }
 
-function touchEnded() {
+function touchEnded(event) {
+  // Let real buttons and links receive normal finger taps.
+  if (!(event.target instanceof HTMLCanvasElement)) return true;
   stopTracing();
   return false;
 }
