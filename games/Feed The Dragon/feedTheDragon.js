@@ -397,7 +397,7 @@ function feedDragonMouseDragged() {
     speed > safeSpoonSpeed
   ) {
     dragonResult = "spilled";
-    dragonFeedsCompleted = 0;
+   
     dragonMessage = "Oops! The cake spilled.";
     spillStartedAt = now;
     spoonHasFood = false;
