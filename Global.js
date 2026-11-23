@@ -38,6 +38,7 @@ window.addEventListener("pageshow", syncMusicMute);
     if (typeof userStartAudio === "function") userStartAudio().catch(error => console.warn("Audio:", error));
   }
   document.addEventListener("pointerdown", startAppAudio, true);
+  document.addEventListener("touchend", startAppAudio, true);
   document.addEventListener("keydown", startAppAudio, true);
   window.addEventListener("pageshow", startMusic);
   window.addEventListener("pagehide", () => {

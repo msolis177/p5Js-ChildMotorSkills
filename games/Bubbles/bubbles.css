@@ -138,7 +138,8 @@ h1 {
   transform: translateY(-50%);
   /* border: 10px solid red;  */
   z-index: 2;   
-  pointer-events: none; 
+  pointer-events: auto;
+  touch-action: none;
 }
 
 .selected-wand-image {
