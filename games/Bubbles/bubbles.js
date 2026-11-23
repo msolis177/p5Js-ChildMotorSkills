@@ -298,7 +298,6 @@ function triggerBubbleFailure() {
   gamePhase = "failed";
   isTracing = false;
   failureSound.play();
-  totalBubbles = 0;
   updateBubbleTally();
   document.getElementById("message").innerText ="Oops! Try again!";
   document.getElementById("next-button").style.display = "none";
