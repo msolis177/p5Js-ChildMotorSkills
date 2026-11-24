@@ -69,7 +69,7 @@ function draw() {
     }
 
     if (bubbleSize > 0) {
-      drawOrganicBubble(bubbleX, bubbleY, bubbleSize);
+      drawBubble(bubbleX, bubbleY, bubbleSize);
     }
 
     fill(51);
@@ -195,7 +195,7 @@ function stopTracing() {
   }
 }
 
-function drawOrganicBubble(x, y, currentSize) {
+function drawBubble(x, y, currentSize) {
   push();
   translate(x, y);
   let wobbleFactor = map(currentSize, 0, maxBubbleSize, 1, 7);
@@ -218,6 +218,7 @@ function drawOrganicBubble(x, y, currentSize) {
   pop();
 }
 
+//Computer 
 function mousePressed() {
    userStartAudio();
   if (gamePhase === "trace") {
@@ -242,8 +243,8 @@ function mouseReleased() {
   stopTracing();
 }
 
+// Mobile devices
 function touchStarted(event) {
-  // Let real buttons and links receive normal finger taps.
   if (!(event.target instanceof HTMLCanvasElement)) return true;
    userStartAudio();
   if (gamePhase === "trace") {
@@ -258,14 +259,12 @@ function touchStarted(event) {
 }
 
 function touchMoved(event) {
-  // Let real buttons and links receive normal finger taps.
   if (!(event.target instanceof HTMLCanvasElement)) return true;
   continueTracing(mouseX, mouseY);
   return false;
 }
 
 function touchEnded(event) {
-  // Let real buttons and links receive normal finger taps.
   if (!(event.target instanceof HTMLCanvasElement)) return true;
   stopTracing();
   return false;
@@ -314,8 +313,6 @@ function resetRound() {
 }
 
 function resetGame() {
-  totalBubbles = 0;
-  updateBubbleTally();
   document.getElementById("next-button").style.display = "none";
   resetRound();
 }

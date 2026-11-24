@@ -167,13 +167,14 @@ h1 {
   margin: 15px auto;
 }
 #next-button {
-   display: none;
+  display: none;
   background-color: #70c9a0;
-   border: none;
-     border-radius: 20px;
+  border: none;
+  border-radius: 20px;
   padding: 12px 30px;
   font-size: 18px;
   font-weight: bold;
+  margin: 10px auto;
   cursor: pointer;
 
 }
